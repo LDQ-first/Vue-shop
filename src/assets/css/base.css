@@ -243,7 +243,7 @@ table {
 }
 
 .font-color-red {
-  color: #d1434a;
+  color: #008EDE;
 }
 
 .font-color-orange {
@@ -419,7 +419,7 @@ a {
 }
 
 a:hover {
-  color: #d1434a;
+  color: #008EDE;
   -webkit-transition: color .3s ease-out;
   transition: color .3s ease-out;
 }
@@ -458,11 +458,11 @@ a:hover {
 }
 
 .nav-breadcrumb a:hover {
-  color: #d1434a;
+  color: #008EDE;
 }
 
 .nav-breadcrumb span {
-  color: #d1434a;
+  color: #008EDE;
 }
 
 /** 普通页面标题 **/
@@ -612,22 +612,22 @@ a:hover {
   font-weight: bold;
   -webkit-transition: all .3s ease-out;
   transition: all .3s ease-out;
-  border: 1px solid #d1434a;
-  color: #d1434a;
+  border: 1px solid #008EDE;
+  color: #008EDE;
   text-transform: uppercase;
   letter-spacing: .25em;
   white-space: nowrap;
 }
 
 .btn:hover, .btn[href]:hover {
-  background-color: #ffe5e6;
+  background-color: #FFB778;
   -webkit-transition: all .3s ease-out;
   transition: all .3s ease-out;
 }
 
 .btn--red, .btn--red[href] {
-  background-color: #d1434a;
-  border-color: #d1434a;
+  background-color: #008EDE;
+  border-color: #008EDE;
   color: #fff;
 }
 
