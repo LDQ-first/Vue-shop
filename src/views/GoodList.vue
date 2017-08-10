@@ -9,7 +9,9 @@
           <div class="filter-nav">
             <span class="sortby">Sort by:</span>
             <a href="javascript:void(0)" class="default cur">Default</a>
-            <a @click="sortGoods" href="javascript:void(0)" class="price">Price <svg class="icon icon-arrow-short"><use xlink:href="#icon-arrow-short"></use></svg></a>
+            <a @click="sortGoods" href="javascript:void(0)" class="price" :class="{'sort-up':sortFlag}">Price 
+              <svg class="icon icon-arrow-short"><use xlink:href="#icon-arrow-short"></use></svg>
+            </a>
             <a href="javascript:void(0)" class="filterby stopPop" @click="showFilterPop">Filter by</a>
           </div>
           <div class="accessory-result">
@@ -50,16 +52,36 @@
         </div>
       </div>
       <div class="md-overlay" v-show="overLayFlag" @click="closePop"></div>
+      <Modal :mdShow="mdShow" @close="closeModal">
+        <p slot="message">
+          请先登录，否则无法加入到购物车中!
+        </p>
+        <div slot="btnGroup">
+          <a class="btn btn--m" @click="mdShow=false">关闭</a>
+        </div>
+      </Modal>
+      <Modal :mdShow="mdShowCart" @close="closeModal">
+        <p slot="message">
+          <svg class="icon-status-ok">
+            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-status-ok"></use>
+          </svg>
+          <span>加入购物车成功！</span>
+        </p>
+        <div slot="btnGroup">
+          <a class="btn btn--m" @click="mdShowCart=false">继续购物</a>
+           <router-link class="btn btn--m" to="/cart">查看购物车</router-link>
+        </div>
+      </Modal>
      <NavFooter/>
     </div>
 </template>
 <script>
     import '@/assets/css/base.css'
     import '@/assets/css/product.css'
-    
     import NavHeader from '@/components/Header'
     import NavFooter from '@/components/Footer'
     import Bread from '@/components/Bread'
+    import Modal from '@/components/Modal'
     import axios from 'axios'
     export default{
         data(){
@@ -90,14 +112,17 @@
                 page: 1,
                 pageSize: 8,
                 busy: true,
-                loading: false
+                loading: false,
+                mdShow: false,
+                mdShowCart: false
 
             }
         },
         components:{
             NavHeader,
             NavFooter,
-            Bread
+            Bread,
+            Modal
         },
         mounted: function () {
             this.getGoodsList()
@@ -159,11 +184,20 @@
               }, 500);
             },
             addCart(productId) {
-              axios.post("/goods/addCart", {
-                productId: productId
-              }).then( res => {
-                console.log(res)
-              })
+              axios.post("/goods/addCart", { productId: productId })
+                   .then( res => res.data)
+                   .then( data => {
+                      if(data.status !== '200') {
+                        this.mdShow = true
+                      }
+                      else {
+                        this.mdShowCart = true
+                      }
+                   })
+            },
+            closeModal() {
+              this.mdShow = false,
+              this.mdShowCart = false
             }
         }
     }
