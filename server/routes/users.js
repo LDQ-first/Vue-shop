@@ -73,5 +73,109 @@ router.get("/checkLogin", (req, res, next) => {
   }
 })
 
+router.get("/cartList", (req, res, next) => {
+   const userId = req.cookies.userId
+   User.findOne({userId:userId}, (err, doc) => {
+     if(err) {
+         res.json({
+            status: '404',
+            msg: err.message,
+            result: ''
+          })
+     } else {
+       if(doc) {
+         res.json({
+           status: '200',
+           msg: 'OK',
+           result: doc.cartList
+         })
+       }
+     }
+   })
+})
+
+router.post("/cartDel", (req, res, next) => {
+  const userId = req.cookies.userId,
+        productId = req.body.productId
+  User.update({ userId: userId }, {$pull:{'cartList': {'productId':productId}}}, (err, doc) => {
+    if(err) {
+      res.json({
+        status: '404',
+        msg: err.message,
+        result: ''
+      })
+    } else {
+      res.json({
+        status: '200',
+        msg: 'OK',
+        result: 'success'
+      })
+    }
+  })
+
+})
+
+
+router.post("/cartEdit",(req, res, next) => {
+    const userId = req.cookies.userId,
+          productId = req.body.productId,
+          productNum = req.body.productNum,
+          checked = req.body.checked
+    User.update({ userId: userId, "cartList.productId": productId },
+    {
+     "cartList.$.productNum": productNum,
+     "cartList.$.checked": checked
+    }, (err, doc) => {
+        if(err) {
+          res.json({
+            status: '404',
+            msg: err.message,
+            result: ''
+          })
+        } else {
+          res.json({
+            status: '200',
+            msg: 'OK',
+            result: 'success'
+          })
+        }
+    })  
+})
+
+
+router.post("/editCheckAll", (req, res, next) => {
+  const userId = req.cookies.userId,
+      checkAll = req.body.checkAll ? 1 : 0
+  User.findOne({userId:userId}, (err, user) => {
+    if(err){
+      res.json({
+        status:'404',
+        msg:err.message,
+        result:''
+      });
+    }else{
+      if(user){
+        user.cartList.forEach((item)=>{
+          item.checked = checkAll;
+        })
+        user.save((Carterr, Cardoc) => {
+            if(Carterr){
+              res.json({
+                status:'404',
+                msg:Carterr,message,
+                result:''
+              })
+            }else{
+              res.json({
+                status:'200',
+                msg:'OK',
+                result:'success'
+              })
+            }
+        })
+      }
+    }
+  })
+})
 
 module.exports = router;

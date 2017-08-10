@@ -56,7 +56,7 @@
         <p slot="message">
           请先登录，否则无法加入到购物车中!
         </p>
-        <div slot="btnGroup">
+        <div slot="btnGroup" class="btnGroup">
           <a class="btn btn--m" @click="mdShow=false">关闭</a>
         </div>
       </Modal>
@@ -67,7 +67,7 @@
           </svg>
           <span>加入购物车成功！</span>
         </p>
-        <div slot="btnGroup">
+        <div slot="btnGroup" class="btnGroup">
           <a class="btn btn--m" @click="mdShowCart=false">继续购物</a>
            <router-link class="btn btn--m" to="/cart">查看购物车</router-link>
         </div>

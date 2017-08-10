@@ -19,6 +19,7 @@ body {
   padding: 0;
   overflow-x: hidden;
   position: relative;
+  min-width: 320px;
 }
 
 ul, ol {
@@ -957,6 +958,10 @@ html {
   width: 38px;
 }
 
+.btnGroup {
+      width: 100%;
+  }
+
 @media screen and (max-width: 1440px) {
   .footer__nav a {
     margin-left: 2em;
@@ -1042,7 +1047,7 @@ html {
     -webkit-transform: none;
     -ms-transform: none;
     transform: none;
-    margin-top: 50px;
+    padding: 30px 0 100px;
   }
 
   .footer__secondary__nav span,
@@ -1051,9 +1056,9 @@ html {
     margin-left: 0;
   }
 
-  .footer__secondary__nav a {
+  /*.footer__secondary__nav a {
     margin-top: 1.6363636364em;
-  }
+  }*/
 }
 
 /** header and footer end **/
