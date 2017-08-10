@@ -9,7 +9,7 @@
     "start": "node build/dev-server.js",
     "build": "node build/build.js",
     "axios": "cnpm install --save axios",
-    "git": "git add . && git commit -m 'modify' && git push origin master",
+    "git": "npm run build && git add . && git commit -m 'modify' && git push origin master",
     "lazy": "cnpm install --save vue-lazyload",
     "express": "cnpm install -g express-generator",
     "ejs": "cnpm install --save ejs",

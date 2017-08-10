@@ -17,7 +17,7 @@ mongoose.connection.on('disconnected', () => {
 })
 
 
-router.get('/', (req, res, next) => {
+router.get('/list', (req, res, next) => {
    const sort = req.param("sort")
    const page = req.param("page")
    const pageSize = req.param("pageSize")

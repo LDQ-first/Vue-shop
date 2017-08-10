@@ -56,7 +56,7 @@
 <script>
     import '@/assets/css/base.css'
     import '@/assets/css/product.css'
-    import '@/assets/css/login.css'
+    
     import NavHeader from '@/components/Header'
     import NavFooter from '@/components/Footer'
     import Bread from '@/components/Bread'
@@ -111,7 +111,7 @@
                   priceChecked: this.priceChecked
                 }
                 this.loading = true;
-                axios.get("/goods", {
+                axios.get("/goods/list", {
                     params: param
                 }).then( res => res.data).then(data => {
                   if(flag) {
