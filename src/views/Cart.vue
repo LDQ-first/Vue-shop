@@ -76,7 +76,7 @@
                   </div>
                 </div>
                 <div class="cart-tab-2">
-                  <div class="item-price">{{item.salePrice|currency('$')}}</div>
+                  <div class="item-price">{{item.salePrice|currency('￥')}}</div>
                 </div>
                 <div class="cart-tab-3">
                   <div class="item-quantity">
@@ -90,7 +90,7 @@
                   </div>
                 </div>
                 <div class="cart-tab-4">
-                  <div class="item-price-total">{{(item.productNum*item.salePrice)|currency('$')}}</div>
+                  <div class="item-price-total">{{(item.productNum*item.salePrice)|currency('￥')}}</div>
                 </div>
                 <div class="cart-tab-5">
                   <div class="cart-item-opration">
@@ -119,7 +119,7 @@
             </div>
             <div class="cart-foot-r">
               <div class="item-total">
-                Item total: <span class="total-price">{{totalPrice|currency('$')}}</span>
+                Item total: <span class="total-price">{{totalPrice|currency('￥')}}</span>
               </div>
               <div class="btn-wrap">
                 <a class="btn btn--red" v-bind:class="{'btn--dis':checkedCount==0}" @click="checkOut">Checkout</a>
@@ -169,7 +169,7 @@
     import NavFooter from '@/components/Footer'
     import NavBread from '@/components/Bread'
     import Modal from '@/components/Modal'
-    import {currency} from '@/util/currency'
+    /*import {currency} from '@/util/currency'*/
     import axios from 'axios'
     export default {
         data() {
@@ -188,9 +188,9 @@
         mounted() {
             this.init()
         },
-        filters: {
+       /* filters: {
             currency:currency
-        },
+        },*/
         computed: {
             checkAllFlag() {
                 return this.checkedCount === this.cartList.length
