@@ -94,7 +94,7 @@
                 </div>
                 <div class="cart-tab-5">
                   <div class="cart-item-opration">
-                    <a href="javascript:;" class="item-edit-btn" @click="delCartConfirm(item.productId)">
+                    <a href="javascript:;" class="item-edit-btn" @click="delCartConfirm(item)">
                       <svg class="icon icon-del">
                         <use xlink:href="#icon-del"></use>
                       </svg>
@@ -223,20 +223,21 @@
              closeModal() {
                  this.modalConfirm = false
              },
-             delCartConfirm(productId) {
-                 this.productId = productId
+             delCartConfirm(item) {
+                 this.delItem = item
                  this.modalConfirm = true
              },
              delCart() {
                 axios.post("/users/cartDel", {
-                    productId: this.productId
+                    productId: this.delItem.productId
                 }).then(res => res.data)
                   .then(data => {
                       if(data.status === '200') {
                           this.modalConfirm = false
+                          this.$store.commit("updateCartCount", -this.delItem.productNum)
                           //this.init()
                           for(let key in this.cartList){
-                              if(this.cartList[key].productId === this.productId){
+                              if(this.cartList[key].productId === this.delItem.productId){
                                   this.cartList.splice(key, 1)
                                   break
                               }

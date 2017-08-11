@@ -86,6 +86,7 @@
     import '@/assets/css/login.css'
     import Modal from './Modal'
     import axios from 'axios'
+    import { mapState } from 'vuex'
     export default {
         data() {
             return {
@@ -98,12 +99,13 @@
             }
         },
         computed: {
-          nickName() {
+          ...mapState(['nickName','cartCount'])
+         /* nickName() {
             return this.$store.state.nickName
           },
           cartCount() {
             return this.$store.state.cartCount
-          }
+          }*/
         },
         components: {
           Modal
@@ -159,7 +161,7 @@
                        //  this.nickName = ''
                        this.isLogin = false
                          this.$store.commit("updateUserInfo", '')
-                         this.$store.commit("updateCartCount", -this.cartCount)
+                         this.$store.commit("initCartCount", 0)
                          if(this.$route.path != '/') {
                             this.$router.push("/")
                           }
@@ -170,7 +172,7 @@
             axios.get("/users/getCartCount")
                  .then(res => res.data)
                  .then(data => {
-                    this.$store.commit("updateCartCount", data.result)
+                    this.$store.commit("initCartCount", data.result)
                  })
           },
           closeModal() {
