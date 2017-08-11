@@ -247,10 +247,12 @@
              editCart(flag, item) {
                  if(flag ===  'add') {
                      item.productNum ++
+                     this.$store.commit("updateCartCount", 1)
                  }
                  else if(flag === 'minu') {
                      if(item.productNum > 1) {
                          item.productNum --
+                         this.$store.commit("updateCartCount", -1)
                      } 
                  }
                  else if(flag === 'checked') {

@@ -191,6 +191,7 @@
                         this.mdShow = true
                       }
                       else {
+                        this.$store.commit("updateCartCount", 1)
                         this.mdShowCart = true
                       }
                    })
