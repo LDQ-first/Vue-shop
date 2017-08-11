@@ -170,6 +170,11 @@
                 axios.get("/users/addressList")
                     .then(res => res.data)
                     .then(data =>{
+                        for(let i in data.result) {
+                          if(data.result[i].isDefault) {
+                            data.result.splice(0, 0 , data.result.splice(i,1)[0])
+                          }
+                        }
                         this.addressList = data.result
                         this.selectedAddrId = this.addressList[0].addressId
                     })

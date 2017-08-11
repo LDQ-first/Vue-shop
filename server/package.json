@@ -1,0 +1,53 @@
+{
+  "name": "vue-shop",
+  "version": "1.0.0",
+  "description": "A Vue.js project",
+  "author": "LDQ-first <178848890@qq.com>",
+  "private": true,
+  "scripts": {
+    "dev": "node build/dev-server.js",
+    "start": "node build/dev-server.js",
+    "build": "node build/build.js",
+    "git": "npm run build && git add . && git commit -m 'modify' && git push origin master",
+    "express": "cnpm install -g express-generator",
+    "ejs": "cnpm install --save ejs",
+    "server": "node server/bin/www",
+    "pm2": "cnpm install -g pm2",
+    "pm2start": "pm2 start server/bin/www",
+    "pm2stop": "pm2 stop server/bin/www",
+    "mongoose": "cnpm install --save mongoose",
+  },
+  "dependencies": {
+    "body-parser": "~1.17.1",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.3",
+    "ejs": "^2.5.7",
+    "express": "~4.15.2",
+    "jade": "~1.11.0",
+    "mongoose": "^4.11.6",
+    "morgan": "~1.8.1",
+    "serve-favicon": "~2.4.2"
+  },
+  "devDependencies": {
+    "chalk": "^2.0.1",
+    "connect-history-api-fallback": "^1.3.0",
+    "cssnano": "^3.10.0",
+    "eventsource-polyfill": "^0.9.6",
+    "express": "^4.14.1",
+    "http-proxy-middleware": "^0.17.3",
+    "semver": "^5.3.0",
+    "shelljs": "^0.7.6",
+    "opn": "^5.1.0",
+    "ora": "^1.2.0",
+    "rimraf": "^2.6.0"
+  },
+  "engines": {
+    "node": ">= 4.0.0",
+    "npm": ">= 3.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}
