@@ -31,9 +31,9 @@
               <span class="navbar-link" v-text="nickName" v-if="nickName"></span>
               <a href="javascript:void(0)" class="navbar-link" @click="loginModalFlag=true" v-show="!nickName">Login</a>
               <a href="javascript:void(0)" class="navbar-link" v-show="nickName" @click="Logout">Logout</a>
-              <div class="navbar-cart-container">
-                <span class="navbar-cart-count"></span>
-                <a class="navbar-link navbar-cart-link" href="/#/cart">
+              <div class="navbar-cart-container" >
+                <span class="navbar-cart-count">{{cartCount}}</span>
+                <a class="navbar-link navbar-cart-link" href="javascript:;" @click="enterCart">
                   <svg class="navbar-cart-logo">
                     <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-cart"></use>
                   </svg>
@@ -71,11 +71,20 @@
           </div>
         </div>
         <div class="md-overlay " v-if="loginModalFlag" @click="loginModalFlag=false"></div>
+         <Modal :mdShow="mdShow" @close="closeModal">
+          <p slot="message">
+            请先登录，否则无法进入到购物车中!
+          </p>
+          <div slot="btnGroup" class="btnGroup">
+            <a class="btn btn--m" @click="mdShow=false">关闭</a>
+          </div>
+        </Modal>
       </header>
 </template>
 
 <script>
     import '@/assets/css/login.css'
+    import Modal from './Modal'
     import axios from 'axios'
     export default {
         data() {
@@ -84,8 +93,20 @@
               userPwd:'123456',
               errorTip:false,
               loginModalFlag:false,
-              nickName: ''
+              mdShow: false,
+              isLogin: false
             }
+        },
+        computed: {
+          nickName() {
+            return this.$store.state.nickName
+          },
+          cartCount() {
+            return this.$store.state.cartCount
+          }
+        },
+        components: {
+          Modal
         },
         mounted() {
           this.checkLogin()
@@ -96,7 +117,16 @@
                  .then(res => res.data)
                  .then(data => {
                    if(data.status === '200') {
-                      this.nickName = data.result
+                     // this.nickName = data.result
+                    this.$store.commit("updateUserInfo", data.result)
+                    this.getCartCount()
+                    this.isLogin = true
+                   }
+                   else {
+                     this.isLogin = false
+                     if(this.$route.path != '/') {
+                       this.$router.push("/")
+                     }
                    }
                  })
           },
@@ -112,7 +142,10 @@
                 if(res.status === "200") {
                   this.errorTip = false
                   this.loginModalFlag = false
-                  this.nickName = res.result.userName
+                  this.isLogin = true
+                //  this.nickName = res.result.userName
+                 this.$store.commit("updateUserInfo", res.result.userName)
+                 this.getCartCount()
                 }else {
                   this.errorTip = true
                 }
@@ -123,10 +156,37 @@
                   .then( res => res.data )
                   .then( data => {
                      if(data.status === "200") {
-                         this.nickName = ''
+                       //  this.nickName = ''
+                       this.isLogin = false
+                         this.$store.commit("updateUserInfo", '')
+                         this.$store.commit("updateCartCount", -this.cartCount)
+                         if(this.$route.path != '/') {
+                            this.$router.push("/")
+                          }
                      }
                   })
+          },
+          getCartCount() {
+            axios.get("/users/getCartCount")
+                 .then(res => res.data)
+                 .then(data => {
+                    this.$store.commit("updateCartCount", data.result)
+                 })
+          },
+          closeModal() {
+            this.mdShow = false
+          },
+          enterCart() {
+            if(!this.isLogin) {
+              this.mdShow = true
+            }
+            else {
+              this.$router.push({
+                path: "/cart"
+              })
+            }
           }
         }
+       
     }
 </script>

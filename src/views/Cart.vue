@@ -122,7 +122,7 @@
                 Item total: <span class="total-price">{{totalPrice|currency('￥')}}</span>
               </div>
               <div class="btn-wrap">
-                <a class="btn btn--red" v-bind:class="{'btn--dis':checkedCount==0}" @click="checkOut">Checkout</a>
+                <a class="btn btn--red" :class="{'btn--dis':checkedCount==0}" @click="checkOut">Checkout</a>
               </div>
             </div>
           </div>
@@ -169,7 +169,6 @@
     import NavFooter from '@/components/Footer'
     import NavBread from '@/components/Bread'
     import Modal from '@/components/Modal'
-    /*import {currency} from '@/util/currency'*/
     import axios from 'axios'
     export default {
         data() {
@@ -188,9 +187,6 @@
         mounted() {
             this.init()
         },
-       /* filters: {
-            currency:currency
-        },*/
         computed: {
             checkAllFlag() {
                 return this.checkedCount === this.cartList.length
@@ -276,7 +272,11 @@
                 })
              },
              checkOut() {
-
+               if(this.checkedCount > 0) {
+                 this.$router.push({
+                   path: "/address"
+                 })
+               }
              }
          }
     }

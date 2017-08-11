@@ -18,7 +18,8 @@
     "pm2start": "pm2 start server/bin/www",
     "pm2stop": "pm2 stop server/bin/www",
     "mongoose": "cnpm install --save mongoose",
-    "infscroll": "cnpm install vue-infinite-scroll --save"
+    "infscroll": "cnpm install vue-infinite-scroll --save",
+    "vuex": "cnpm install --save vuex"
   },
   "dependencies": {
     "axios": "^0.16.2",
@@ -34,7 +35,8 @@
     "vue": "^2.3.3",
     "vue-infinite-scroll": "^2.0.1",
     "vue-lazyload": "^1.0.6",
-    "vue-router": "^2.6.0"
+    "vue-router": "^2.6.0",
+    "vuex": "^2.3.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

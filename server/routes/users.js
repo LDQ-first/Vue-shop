@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const User = require('./../models/users')
-
+require('../util/util')
 
 /* GET users listing. */
 router.get('/', (req, res, next) => {
@@ -152,7 +152,7 @@ router.post("/editCheckAll", (req, res, next) => {
         status:'404',
         msg:err.message,
         result:''
-      });
+      })
     }else{
       if(user){
         user.cartList.forEach((item)=>{
@@ -176,6 +176,249 @@ router.post("/editCheckAll", (req, res, next) => {
       }
     }
   })
+})
+
+
+router.get('/addressList', (req, res, next) => {
+  const userId = req.cookies.userId
+  User.findOne({userId: userId}, (err, doc) => {
+    if(err) {
+      res.json({
+        status:'404',
+        msg:err.message,
+        result:''
+      })
+    }
+    else {
+      if(doc) {
+        res.json({
+          status:'200',
+          msg:'OK',
+          result: doc.addressList
+        })
+      }
+    }
+  })
+        
+})
+
+
+router.post('/setDefault', (req, res, next) => {
+  const userId = req.cookies.userId,
+        addressId = req.body.addressId
+   User.findOne({userId: userId}, (err, doc) => {
+    if(err) {
+      res.json({
+        status:'404',
+        msg:err.message,
+        result:''
+      })
+    }
+    else {
+      if(doc) {
+        const addressList = doc.addressList
+        addressList.forEach( item => {
+          if(item.addressId === addressId) {
+            item.isDefault = true
+          }
+          else {
+            item.isDefault = false
+          }
+        })
+      }
+      doc.save((addressErr, addressDoc) => {
+        if(addressErr) {
+          res.json({
+            status:'404',
+            msg:addressErr.message,
+            result:''
+          })
+        }
+        else {
+          res.json({
+            status: '200',
+            msg: 'OK',
+            result: ''
+          })
+        }
+      })
+    }
+  })
+ 
+        
+})
+
+
+router.post('/delAddress', (req, res, next) => {
+  const userId = req.cookies.userId,
+        addressId = req.body.addressId
+    User.update({ userId: userId }, {$pull:{'addressList': {'addressId':addressId}}},
+     (err, doc) => {
+        if(err) {
+          res.json({
+            status: '404',
+            msg: err.message,
+            result: ''
+          })
+        } else {
+          res.json({
+            status: '200',
+            msg: 'OK',
+            result: 'success'
+          })
+        }
+    })
+        
+})
+
+router.post("/payMent", (req, res, next) => {
+  const userId = req.cookies.userId,
+        addressId = req.body.addressId 
+        orderTotal = req.body.orderTotal 
+  User.findOne({ userId: userId}, (err, doc) => {
+    if(err){
+      res.json({
+        status:'404',
+        msg:err.message,
+        result:''
+      })
+    }else{
+      if(doc){
+          let address = {}, goodsList = []
+          doc.addressList.forEach( item => {
+            if(item.addressId = addressId) {
+              address = item;
+            }
+          })
+          doc.cartList.filter( item => {
+            if(item.checked === 1) {
+              goodsList.push(item)
+            }
+          })
+          
+          const platform = '213'
+          const r1 = Math.floor(Math.random() * 10)
+          const r2 = Math.floor(Math.random() * 10)
+
+          const sysDate = new Date().Format('yyyyMMddhhmmss')
+          const createDate = new Date().Format('yyyy-MM-dd hh:mm:ss')
+          const orderId = platform + r1 + sysDate + r2
+
+          const order = {
+             orderId: orderId,
+             orderTotal: orderTotal,
+             addressInfo: address,
+             goodsList: goodsList,
+             orderStatus: '1',
+             createDate: createDate
+          }
+
+          doc.orderList.push(order)
+
+          doc.save((orderErr, orderDoc) => {
+            if(orderErr) {
+              res.json({
+                status:'404',
+                msg:orderErr.message,
+                result:''
+              })
+            }
+            else {
+              res.json({
+                status: '200',
+                msg: 'OK',
+                result: {
+                  orderId: order.orderId,
+                  orderTotal: order.orderTotal
+                }
+              })
+            }
+          })
+      }
+    }
+  })
+})
+
+
+router.get("/orderDetail", (req, res, next) => {
+  const userId = req.cookies.userId,
+        orderId = req.param("orderId")
+  User.findOne({ userId: userId }, (err, userInfo) => {
+    if(err){
+      res.json({
+        status:'404',
+        msg:err.message,
+        result:''
+      })
+    }else{
+      if(userInfo){
+         const orderList =  userInfo.orderList
+         if(orderList.length > 0) {
+          let orderTotal = 0
+           orderList.forEach( item => {
+             if(item.orderId == orderId) {
+               orderTotal = item.orderTotal
+             }
+           })
+           if(orderTotal > 0) {
+             res.json({
+                status:'200',
+                msg:'OK',
+                result:{
+                  orderId: orderId,
+                  orderTotal: orderTotal
+                }
+              })
+           }
+           else {
+              res.json({
+                status:'404',
+                msg:'无此订单',
+                result:''
+              })
+           }
+           
+         }
+         else {
+           res.json({
+            status:'404',
+            msg:'当前用户未创建订单',
+            result:''
+          })
+         }
+         
+      }
+    }
+  })
+})
+
+router.get("/getCartCount", (req, res, next) => {
+    if(req.cookies && req.cookies.userId) {
+      const userId = req.cookies.userId
+      User.findOne({ userId: userId }, (err, doc) => {
+        if(err) {
+          res.json({
+            status:'404',
+            msg:err.message,
+            result:''
+          })
+        }
+        else {
+          if(doc) {
+            const cartList = doc.cartList
+            let cartCount = 0
+            cartList.map( item => {
+              cartCount += parseInt(item.productNum)
+            })
+            res.json({
+              status: '200',
+              msg: 'OK',
+              result: cartCount
+            })
+          }
+        }
+      })
+    }
 })
 
 module.exports = router;
