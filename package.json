@@ -19,7 +19,9 @@
     "pm2stop": "pm2 stop server/bin/www",
     "mongoose": "cnpm install --save mongoose",
     "infscroll": "cnpm install vue-infinite-scroll --save",
-    "vuex": "cnpm install --save vuex"
+    "vuex": "cnpm install --save vuex",
+    "session": "cnpm install --save express-session connect-mongo",
+    "sass": "cnpm install --save sass-loader node-sass"
   },
   "dependencies": {
     "axios": "^0.16.2",

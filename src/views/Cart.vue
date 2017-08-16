@@ -2,7 +2,7 @@
   <div>
     <nav-header></nav-header>
     <nav-bread>
-      <span>My Cart</span>
+      <span>我的购物车</span>
     </nav-bread>
     <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1"
          xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -45,17 +45,17 @@
     <div class="container">
       <div class="cart">
         <div class="page-title-normal">
-          <h2 class="page-title-h2"><span>My Cart</span></h2>
+          <h2 class="page-title-h2"><span>我的购物车</span></h2>
         </div>
         <div class="item-list-wrap">
           <div class="cart-item">
             <div class="cart-item-head">
               <ul>
-                <li>Items</li>
-                <li>Price</li>
-                <li>Quantity</li>
-                <li>Subtotal</li>
-                <li>Edit</li>
+                <li>商品</li>
+                <li>单价</li>
+                <li>数量</li>
+                <li>总价</li>
+                <li>删除</li>
               </ul>
             </div>
             <ul class="cart-item-list">
@@ -113,16 +113,16 @@
                   <span class="checkbox-btn item-check-btn" :class="{'check':checkAllFlag}">
                       <svg class="icon icon-ok"><use xlink:href="#icon-ok"/></svg>
                   </span>
-                  <span>Select all</span>
+                  <span>全选</span>
                 </a>
               </div>
             </div>
             <div class="cart-foot-r">
               <div class="item-total">
-                Item total: <span class="total-price">{{totalPrice|currency('￥')}}</span>
+                总价: <span class="total-price">{{totalPrice|currency('￥')}}</span>
               </div>
               <div class="btn-wrap">
-                <a class="btn btn--red" :class="{'btn--dis':checkedCount==0}" @click="checkOut">Checkout</a>
+                <a class="btn btn--red" :class="{'btn--dis':checkedCount==0}" @click="checkOut">确认</a>
               </div>
             </div>
           </div>

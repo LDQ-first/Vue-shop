@@ -29,8 +29,8 @@
             <div class="navbar-menu-container">
               <!--<a href="/" class="navbar-link">我的账户</a>-->
               <span class="navbar-link" v-text="nickName" v-if="nickName"></span>
-              <a href="javascript:void(0)" class="navbar-link" @click="loginModalFlag=true" v-show="!nickName">Login</a>
-              <a href="javascript:void(0)" class="navbar-link" v-show="nickName" @click="Logout">Logout</a>
+              <a href="javascript:void(0)" class="navbar-link" @click="loginModalFlag=true" v-show="!nickName">登录</a>
+              <a href="javascript:void(0)" class="navbar-link" v-show="nickName" @click="Logout">登出</a>
               <div class="navbar-cart-container" >
                 <span class="navbar-cart-count" v-if="cartCount > 0">{{cartCount}}</span>
                 <a class="navbar-link navbar-cart-link" href="javascript:;" @click="enterCart">

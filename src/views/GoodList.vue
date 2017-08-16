@@ -2,24 +2,24 @@
     <div>
       <NavHeader/>
       <Bread>
-        <span>Goods</span>
+        <span>商品</span>
       </Bread>
       <div class="accessory-result-page accessory-page">
         <div class="container">
           <div class="filter-nav">
-            <span class="sortby">Sort by:</span>
-            <a href="javascript:void(0)" class="default cur">Default</a>
-            <a @click="sortGoods" href="javascript:void(0)" class="price" :class="{'sort-up':sortFlag}">Price 
+            <span class="sortby">排序:</span>
+            <a href="javascript:void(0)" class="default cur">默认</a>
+            <a @click="sortGoods" href="javascript:void(0)" class="price" :class="{'sort-up':sortFlag}">价格 
               <svg class="icon icon-arrow-short"><use xlink:href="#icon-arrow-short"></use></svg>
             </a>
-            <a href="javascript:void(0)" class="filterby stopPop" @click="showFilterPop">Filter by</a>
+            <a href="javascript:void(0)" class="filterby stopPop" @click="showFilterPop">过滤</a>
           </div>
           <div class="accessory-result">
             <!-- filter -->
             <div class="filter stopPop" id="filter" :class="{'filterby-show': filterBy}">
               <dl class="filter-price">
-                <dt>Price:</dt>
-                <dd @click="setPriceFilter('all')" ><a href="javascript:void(0)" :class="{'cur':priceChecked === 'all'}">All</a></dd>
+                <dt>价格:</dt>
+                <dd @click="setPriceFilter('all')" ><a href="javascript:void(0)" :class="{'cur':priceChecked === 'all'}">全部</a></dd>
                 <dd v-for="(price, index) in priceFilter" key="index" @click="setPriceFilter(index)"  >
                   <a href="javascript:void(0)" :class="{'cur': priceChecked == index}">{{price.startPrice}} - {{price.endPrice}}</a>
                 </dd>
@@ -44,7 +44,7 @@
                   </li>
                 </ul>
                 <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="30" class="load-more">
-                  <img src="../assets/loading-spin.svg" alt="" v-show="loading">
+                  <img src="../assets/loading-spinning-bubbles.svg" alt="" v-show="loading">
                 </div>
               </div>
             </div>
