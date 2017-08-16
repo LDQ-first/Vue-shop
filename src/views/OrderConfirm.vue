@@ -162,7 +162,9 @@
                         this.subTotal += item.salePrice * item.productNum;
                     }
                 })
-
+                this.shipping = this.subTotal * 0.1
+                this.discount = this.subTotal * 0.2
+                this.tax = this.subTotal * 0.3
                 this.orderTotal = this.subTotal + this.shipping - this.discount + this.tax
             });
          },

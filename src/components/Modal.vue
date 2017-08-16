@@ -3,6 +3,7 @@
          <div class="md-modal modal-msg md-modal-transition" :class="{'md-show':mdShow}">
           <div class="md-modal-inner">
             <div class="md-top">
+              <slot name='title'></slot>
               <button class="md-close" @click="closeModal">关闭</button>
             </div>
             <div class="md-content">

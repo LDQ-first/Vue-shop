@@ -116,7 +116,8 @@
               </div>
             </div>
             <div class="next-btn-wrap">
-              <router-link class="btn btn--m btn--red" :to="{path:'orderConfirm',query:{'addressId':selectedAddrId}}">下一步</router-link>
+              <router-link class="btn btn--m btn--red" :to="{path:'orderConfirm',query:{'addressId':selectedAddrId}}" 
+              :class="{'btn--dis': !addressList.length}">下一步</router-link>
             </div>
           </div>
         </div>
@@ -126,7 +127,7 @@
           您是否确认要删除此地址?
         </p>
         <div slot="btnGroup">
-            <a class="btn btn--m" href="javascript:;" @click.prevent="delAddress">确认</a>
+            <a class="btn btn--m" href="javascript:;" @click.prevent="delAddress" >确认</a>
             <a class="btn btn--m btn--red" href="javascript:;" @click.prevent="isMdShow=false">取消</a>
         </div>
       </modal>
@@ -170,13 +171,18 @@
                 axios.get("/users/addressList")
                     .then(res => res.data)
                     .then(data =>{
-                        for(let i in data.result) {
-                          if(data.result[i].isDefault) {
-                            data.result.splice(0, 0 , data.result.splice(i,1)[0])
+                      if(data.status === '200') {
+                          for(let i in data.result) {
+                            if(data.result[i].isDefault) {
+                              data.result.splice(0, 0 , data.result.splice(i,1)[0])
+                            }
                           }
+                          this.addressList = data.result
+                          this.selectedAddrId = this.addressList[0].addressId
                         }
-                        this.addressList = data.result
-                        this.selectedAddrId = this.addressList[0].addressId
+                        else {
+                          console.log(this.addressList.length === 0)
+                        }
                     })
             },
             expand(){

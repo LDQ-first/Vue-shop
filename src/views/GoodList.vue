@@ -141,7 +141,6 @@
                 }).then( res => res.data).then(data => {
                   if(flag) {
                      this.goodsList = this.goodsList.concat(data.result.list)
-                     console.log(data.result.count)
                      if(data.result.count === 0) {
                        this.busy = true
                      }

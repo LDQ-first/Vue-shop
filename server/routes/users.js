@@ -9,6 +9,53 @@ router.get('/', (req, res, next) => {
 });
 
 
+router.post('/signup', (req, res, next) => {
+  const param = {
+     userName: req.body.userName,
+     userPwd: req.body.userPwd
+   }
+   User.findOne(param, (err, doc) => {
+     if(err) {
+         res.json({
+            status: '404',
+            msg: err.message,
+            result: ''
+          })
+     }
+     else {
+       if(doc) {
+         res.json({
+          status: '400',
+          msg: '用户已存在',
+          result: ''
+        })
+       } else {
+         console.log(param)
+         param.userId = Math.floor(Math.random() * 1000000000) + ''
+         console.log(param)
+         const newUser = new User(param)
+         newUser.save((err, user) => {
+           if(err) {
+             res.json({
+              status: '500',
+              msg: '用户创建失败',
+              result: ''
+            })
+           } else {
+              res.json({
+                status: '200',
+                msg: '用户创建成功',
+                result: param
+              })
+           }
+         })
+       }
+     
+     }
+   })
+})
+
+
 router.post('/login', (req, res, next) => {
    const param = {
      userName: req.body.userName,
@@ -17,11 +64,13 @@ router.post('/login', (req, res, next) => {
    User.findOne(param, (err, doc) => {
      if(err) {
        res.json({
-         status: '404',
-         msg: err.message
-       })
+          status: '404',
+          msg: err.message,
+          result: ''
+        })
      } else {
        if(doc) {
+       //  console.log(doc)
          res.cookie("userId", doc.userId, {
            path: '/',
            maxAge: 1000 * 60 * 60
@@ -30,6 +79,18 @@ router.post('/login', (req, res, next) => {
            path: '/',
            maxAge: 1000 * 60 * 60
          })
+        /* res.session.userId = doc.userId*/
+          // 检查 session 中的 isVisit 字段
+          // 如果存在则增加一次，否则为 session 设置 isVisit 字段，并初始化为 1。
+        /*  if(req.session.isVisit) {
+            req.session.isVisit++;
+            console.log(`第 ${req.session.isVisit} 次来此页面`)
+          } else {
+            req.session.isVisit = 1;
+            console.log("欢迎第一次来这里")
+            console.log(req.session)
+          }*/
+         req.session.user = doc.userName
          //req.session.user = doc
          res.json({
            status: '200',
@@ -49,6 +110,24 @@ router.post('/logout', (req, res, next) => {
     path: "/",
     maxAge: -1
   })
+   res.cookie("userName", "", {
+    path: '/',
+    maxAge: -1
+  })
+  res.cookie("user", "", {
+    path: '/',
+    maxAge: -1
+  })
+  console.log(req.session)
+  req.session.destroy( (err) => {
+      if(err) { 
+        console.log("session销毁失败.")
+      }
+      else { 
+        console.log("session被销毁.")
+      }
+  })
+  console.log(req.session)
   res.json({
     status: "200",
     msg: "OK",
@@ -57,7 +136,7 @@ router.post('/logout', (req, res, next) => {
 })
 
 router.get("/checkLogin", (req, res, next) => {
-  if(req.cookies.userId) {
+  if(req.cookies.userId && req.cookies.userName && req.cookies.user) {
     res.json({
       status: '200',
       msg: 'OK',
@@ -190,11 +269,17 @@ router.get('/addressList', (req, res, next) => {
       })
     }
     else {
-      if(doc) {
+      if(doc && doc.addressList.length) {
         res.json({
           status:'200',
           msg:'OK',
           result: doc.addressList
+        })
+      } else {
+         res.json({
+          status:'400',
+          msg: '没有地址',
+          result:''
         })
       }
     }
@@ -283,7 +368,7 @@ router.post("/payMent", (req, res, next) => {
         result:''
       })
     }else{
-      if(doc){
+      if(doc &&  doc.addressList.length){
           let address = {}, goodsList = []
           doc.addressList.forEach( item => {
             if(item.addressId = addressId) {
@@ -334,6 +419,13 @@ router.post("/payMent", (req, res, next) => {
               })
             }
           })
+      }
+      else {
+        res.json({
+          status:'400',
+          msg:'没有地址',
+          result:''
+        })
       }
     }
   })

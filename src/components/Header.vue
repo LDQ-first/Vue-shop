@@ -30,6 +30,7 @@
               <!--<a href="/" class="navbar-link">我的账户</a>-->
               <span class="navbar-link" v-text="nickName" v-if="nickName"></span>
               <a href="javascript:void(0)" class="navbar-link" @click="loginModalFlag=true" v-show="!nickName">登录</a>
+              <a href="javascript:void(0)" class="navbar-link" @click="signupModalFlag=true" v-show="!nickName">注册</a>
               <a href="javascript:void(0)" class="navbar-link" v-show="nickName" @click="Logout">登出</a>
               <div class="navbar-cart-container" >
                 <span class="navbar-cart-count" v-if="cartCount > 0">{{cartCount}}</span>
@@ -45,13 +46,13 @@
          <div class="md-modal modal-msg md-modal-transition" :class="{'md-show':loginModalFlag}">
           <div class="md-modal-inner">
             <div class="md-top">
-              <div class="md-title">Login in</div>
-              <button class="md-close" @click="loginModalFlag=false">Close</button>
+              <div class="md-title">登录</div>
+              <button class="md-close" @click="loginModalFlag=false">关闭</button>
             </div>
             <div class="md-content">
               <div class="confirm-tips">
                 <div class="error-wrap">
-                  <span class="error error-show" v-show="errorTip">用户名或者密码错误</span>
+                  <span class="error error-show" v-show="errorTip">用户已存在</span>
                 </div>
                 <ul>
                   <li class="regi_form_input">
@@ -79,6 +80,27 @@
             <a class="btn btn--m" @click="mdShow=false">关闭</a>
           </div>
         </Modal>
+        <Modal :mdShow="signupModalFlag" @close="closeModal">
+          <div slot="title" class="md-title">注册</div>
+          <div slot="message">
+            <div class="error-wrap">
+              <span class="error error-show" v-show="errorTip">用户名或者密码错误</span>
+            </div>
+            <ul>
+              <li class="regi_form_input">
+                <i class="icon IconPeople"></i>
+                <input type="text" tabindex="1" name="loginname" v-model="userName" class="regi_login_input regi_login_input_left" placeholder="User Name" data-type="loginname">
+              </li>
+              <li class="regi_form_input noMargin">
+                <i class="icon IconPwd"></i>
+                <input type="password" tabindex="2"  name="password" v-model="userPwd" class="regi_login_input regi_login_input_left login-input-no input_text" placeholder="Password" @keyup.enter="login">
+              </li>
+            </ul>
+          </div>
+          <div slot="btnGroup" class="btnGroup">
+            <a href="javascript:;" class="btn-login" @click="SignUp">注册</a>
+          </div>
+        </Modal>
       </header>
 </template>
 
@@ -95,7 +117,8 @@
               errorTip:false,
               loginModalFlag:false,
               mdShow: false,
-              isLogin: false
+              isLogin: false,
+              signupModalFlag: false,
             }
         },
         computed: {
@@ -144,6 +167,7 @@
                 if(res.status === "200") {
                   this.errorTip = false
                   this.loginModalFlag = false
+                  this.signupModalFlag = false
                   this.isLogin = true
                 //  this.nickName = res.result.userName
                  this.$store.commit("updateUserInfo", res.result.userName)
@@ -177,6 +201,7 @@
           },
           closeModal() {
             this.mdShow = false
+            this.signupModalFlag = false
           },
           enterCart() {
             if(!this.isLogin) {
@@ -187,6 +212,30 @@
                 path: "/cart"
               })
             }
+          },
+          SignUp() {
+            axios.post('/users/signup',  {
+              userName: this.userName,
+              userPwd: this.userPwd
+            }).then(res => res.data)
+              .then(data => {
+                console.log(data)
+                if(data.status === '200') {
+                  this.userName = data.result.userName
+                  this.userPwd = data.result.userPwd
+                  this.Login()
+                  /*
+                    this.signupModalFlag = false
+                    this.errorTip = false
+                    this.isLogin = true
+                    this.$store.commit("updateUserInfo", data.result.userName)
+                    this.getCartCount()
+                  this.userName = data.result.userName
+                  this.userPwd = data.result.userPwd*/
+                } else {
+                    this.errorTip = true
+                }
+              })
           }
         }
        

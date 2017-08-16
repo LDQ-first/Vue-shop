@@ -66,7 +66,7 @@ router.get('/list', (req, res, next) => {
 })
 
 router.post("/addCart", (req, res, next) => {
-    const userId = '100000077',productId = req.body.productId
+    const userId = req.cookies.userId,productId = req.body.productId
     const User = require('../models/users.js')
     User.findOne({ userId:userId }, (err, doc) => {
         if(err) {
