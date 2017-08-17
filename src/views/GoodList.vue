@@ -72,7 +72,7 @@
            <router-link class="btn btn--m" to="/cart">查看购物车</router-link>
         </div>
       </Modal>
-     <NavFooter/>
+     <NavFooter class="noPadding"/>
     </div>
 </template>
 <script>

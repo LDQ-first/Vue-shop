@@ -73,7 +73,7 @@ a {
 /*login*/
 .regi_form_input{
   position: relative;
-  height: 42px;
+ /* height: 42px;*/
   line-height: 42px;
   background: none;
   margin-bottom: 15px;
@@ -100,7 +100,7 @@ a {
   left:45px;
   top:0;
   padding: 9px 0 10px;
-  width: 270px;
+  width: 340px;
   font-size: 14px;
   zoom: 1;
   border: none;
@@ -108,6 +108,31 @@ a {
   /*height: 23px;*/
   line-height: 23px;
   background: 0 0!important;
+}
+/*.address_form_input {
+  height:auto;
+}*/
+.address_form_input .address_add_input{
+    left: 60px;
+    overflow: auto;
+    height: 42px;
+}
+.address_form_input .icon {
+   margin: 0;
+}
+.address_form_input .address_textarea {
+  height: 120px;
+  width: 80%;
+  margin: 1em 0;
+}
+@media screen and (max-width: 765px) {
+  .address_form_input .address_add_input{
+      width: 210px;
+  }
+}
+.input_title {
+  float: left;
+  margin-left: 5px;
 }
 .md-title{
   position: absolute;

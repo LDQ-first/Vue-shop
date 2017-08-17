@@ -1,5 +1,15 @@
 <template>
     <div>
+       <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1"
+         xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <defs>
+        <symbol id="icon-ok" viewBox="0 0 32 32">
+          <title>ok</title>
+          <path class="path1"
+                d="M31.020 0.438c-0.512-0.363-1.135-0.507-1.757-0.406s-1.166 0.435-1.529 0.937l-17.965 24.679-5.753-5.67c-0.445-0.438-1.035-0.679-1.664-0.679s-1.219 0.241-1.664 0.679c-0.917 0.904-0.917 2.375 0 3.279l7.712 7.6c0.438 0.432 1.045 0.681 1.665 0.681l0.195-0.008c0.688-0.057 1.314-0.406 1.717-0.959l19.582-26.9c0.754-1.038 0.512-2.488-0.538-3.233z"></path>
+        </symbol>
+      </defs>
+    </svg>
       <nav-header></nav-header>
       <nav-bread>
         <span>地址</span>
@@ -76,7 +86,7 @@
                     </div>
                     <div class="addr-opration addr-default" v-if="item.isDefault">默认地址</div>
                   </li>
-                  <li class="addr-new">
+                  <li class="addr-new" @click="showAddressModal">
                     <div class="add-new-inner">
                       <i class="icon-add">
                         <svg class="icon icon-add"><use xlink:href="#icon-add"></use></svg>
@@ -131,6 +141,34 @@
             <a class="btn btn--m btn--red" href="javascript:;" @click.prevent="isMdShow=false">取消</a>
         </div>
       </modal>
+      <Modal :mdShow="addressModalFlag" @close="closeaddressModal">
+          <div slot="title" class="md-title">添加地址</div>
+          <div slot="message">
+            <div class="error-wrap">
+              <span class="error error-show" v-show="adressErrorTip">所有填空必填</span>
+            </div>
+            <ul>
+              <li class="regi_form_input address_form_input" v-for="(item, index) of newAddress" key="index">
+                <span class="input_title">{{newAddressTitle[index]}}</span>
+                <input type="text" tabindex="2"  :name="`${index}`" v-model="newAddress[index]" v-if="isInput(index)"
+                class="regi_login_input address_add_input regi_login_input_left login-input-no input_text" >
+                <textarea name="address" class="address_textarea" v-model="newAddress.streetName" 
+                  v-else-if="index === 'streetName'"></textarea>
+                <div class="cart-item-check" v-else="index === 'isDefault'">
+                  <a href="javascipt:;" class="checkbox-btn item-check-btn" :class="{'check':item}" 
+                    @click.prevent="editDefault('checked',item)">
+                    <svg class="icon icon-ok">
+                      <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-ok"></use>
+                    </svg>
+                  </a>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div slot="btnGroup" class="btnGroup">
+            <a href="javascript:;" class="btn-login" @click="addAddress">添加</a>
+          </div>
+        </Modal>
       <nav-footer></nav-footer>
     </div>
 </template>
@@ -143,13 +181,29 @@
     import axios from 'axios'
     export default{
         data() {
-            return{
-                limit:3,
-                checkIndex:0,
-                selectedAddrId:'',
-                addressList:[],
-                isMdShow:false,
-                addressId:''
+            return {
+                limit: 3,
+                checkIndex: 0,
+                selectedAddrId: '',
+                addressList: [],
+                isMdShow: false,
+                addressId: '',
+                adressErrorTip: false,
+                addressModalFlag: false,
+                newAddressTitle: {
+                  "userName" : "收货人",
+                  "streetName" : "地址",
+                  "postCode" : "邮编",
+                  "tel" : "电话",
+                  "isDefault" : "是否为默认地址"
+                },
+                newAddress: {
+                  "userName" : "",
+                  "streetName" : "",
+                  "postCode" : "",
+                  "tel" : "",
+                  "isDefault" : false
+                }
             }
         },
         mounted(){
@@ -192,6 +246,12 @@
                     this.limit = 3
                 }
             },
+            editDefault(flag, isDefault) {
+              console.log(isDefault)
+              if(flag === 'checked') {
+                     this.newAddress.isDefault = isDefault === true ? false : true
+                 }
+            },
             setDefault(addressId){
                 axios.post("/users/setDefault",{
                     addressId:addressId
@@ -221,6 +281,47 @@
                         this.init()
                     }
                 })
+            },
+            addAddress() {
+              for(let key of Object.keys(this.newAddress)) {
+                if(this.newAddress[key] === '') {
+                  this.adressErrorTip = true
+                  return
+                }
+              }
+              
+              axios.post('/users/addAdress', {
+                newAddress: this.newAddress
+              })
+                .then(res => res.data)
+                .then(data => {
+                  if(data.status === '200') {
+                    this.addressModalFlag = false
+                    this.init()
+                  }
+                })
+            },
+            closeaddressModal() {
+              this.addressModalFlag = false
+            },
+            isInput(index) {
+              if(index === 'streetName' ||
+                 index === 'isDefault') {
+                   return false
+                 }
+                 else {
+                   return true
+                 }
+            },
+            showAddressModal() {
+              this.addressModalFlag = true
+              this.newAddress = {
+                  "userName" : "",
+                  "streetName" : "",
+                  "postCode" : "",
+                  "tel" : "",
+                  "isDefault" : false
+                }
             }
         }
     }

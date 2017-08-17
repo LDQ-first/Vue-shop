@@ -29,8 +29,8 @@
             <div class="navbar-menu-container">
               <!--<a href="/" class="navbar-link">我的账户</a>-->
               <span class="navbar-link" v-text="nickName" v-if="nickName"></span>
-              <a href="javascript:void(0)" class="navbar-link" @click="loginModalFlag=true" v-show="!nickName">登录</a>
-              <a href="javascript:void(0)" class="navbar-link" @click="signupModalFlag=true" v-show="!nickName">注册</a>
+              <a href="javascript:void(0)" class="navbar-link" @click="showLoginModal" v-show="!nickName">登录</a>
+              <a href="javascript:void(0)" class="navbar-link" @click="showSignupModal" v-show="!nickName">注册</a>
               <a href="javascript:void(0)" class="navbar-link" v-show="nickName" @click="Logout">登出</a>
               <div class="navbar-cart-container" >
                 <span class="navbar-cart-count" v-if="cartCount > 0">{{cartCount}}</span>
@@ -52,7 +52,7 @@
             <div class="md-content">
               <div class="confirm-tips">
                 <div class="error-wrap">
-                  <span class="error error-show" v-show="errorTip">用户已存在</span>
+                  <span class="error error-show" v-show="errorTip">用户名或者密码错误</span>
                 </div>
                 <ul>
                   <li class="regi_form_input">
@@ -84,7 +84,7 @@
           <div slot="title" class="md-title">注册</div>
           <div slot="message">
             <div class="error-wrap">
-              <span class="error error-show" v-show="errorTip">用户名或者密码错误</span>
+              <span class="error error-show" v-show="errorTip">用户已存在</span>
             </div>
             <ul>
               <li class="regi_form_input">
@@ -155,6 +155,12 @@
                    }
                  })
           },
+          showLoginModal() {
+            this.errorTip = false
+            this.userName = 'admin',
+            this.userPwd = '123456',
+            this.loginModalFlag = true
+          },
           Login() {
             if(!this.userName || !this.userPwd) {
               this.errorTip = true
@@ -212,6 +218,12 @@
                 path: "/cart"
               })
             }
+          },
+          showSignupModal() {
+            this.signupModalFlag = true
+            this.userName = ''
+            this.userPwd = ''
+            this.errorTip = false
           },
           SignUp() {
             axios.post('/users/signup',  {

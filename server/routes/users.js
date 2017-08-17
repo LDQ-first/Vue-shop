@@ -8,13 +8,13 @@ router.get('/', (req, res, next) => {
   res.send('respond with a resource');
 });
 
-
+//注册
 router.post('/signup', (req, res, next) => {
   const param = {
      userName: req.body.userName,
      userPwd: req.body.userPwd
    }
-   User.findOne(param, (err, doc) => {
+   User.findOne({userName: param.userName}, (err, doc) => {
      if(err) {
          res.json({
             status: '404',
@@ -30,9 +30,7 @@ router.post('/signup', (req, res, next) => {
           result: ''
         })
        } else {
-         console.log(param)
          param.userId = Math.floor(Math.random() * 1000000000) + ''
-         console.log(param)
          const newUser = new User(param)
          newUser.save((err, user) => {
            if(err) {
@@ -56,6 +54,7 @@ router.post('/signup', (req, res, next) => {
 })
 
 
+//登录
 router.post('/login', (req, res, next) => {
    const param = {
      userName: req.body.userName,
@@ -70,7 +69,7 @@ router.post('/login', (req, res, next) => {
         })
      } else {
        if(doc) {
-       //  console.log(doc)
+        // console.log(doc)
          res.cookie("userId", doc.userId, {
            path: '/',
            maxAge: 1000 * 60 * 60
@@ -79,7 +78,6 @@ router.post('/login', (req, res, next) => {
            path: '/',
            maxAge: 1000 * 60 * 60
          })
-        /* res.session.userId = doc.userId*/
           // 检查 session 中的 isVisit 字段
           // 如果存在则增加一次，否则为 session 设置 isVisit 字段，并初始化为 1。
         /*  if(req.session.isVisit) {
@@ -90,8 +88,11 @@ router.post('/login', (req, res, next) => {
             console.log("欢迎第一次来这里")
             console.log(req.session)
           }*/
-         req.session.user = doc.userName
-         //req.session.user = doc
+        // req.session.user = doc.userName
+         req.session.user = {
+           userName: doc.userName,
+           userId: doc.userId
+         }
          res.json({
            status: '200',
            msg: 'OK',
@@ -99,12 +100,19 @@ router.post('/login', (req, res, next) => {
              userName: doc.userName
            }
          })
+       } else {
+         res.json({
+          status: '400',
+          msg: '用户名或者密码错误',
+          result: ''
+        })
        }
      }
    })
 })
 
 
+//登出
 router.post('/logout', (req, res, next) => {
   res.cookie("userId", "", {
     path: "/",
@@ -135,12 +143,17 @@ router.post('/logout', (req, res, next) => {
   })
 })
 
+
+//检查登录
 router.get("/checkLogin", (req, res, next) => {
-  if(req.cookies.userId && req.cookies.userName && req.cookies.user) {
+  console.log(req.session.user)
+//  if(req.cookies.userId && req.cookies.userName && req.cookies.user) {
+  if(req.session.user.userId && req.session.user.userName ) {
     res.json({
       status: '200',
       msg: 'OK',
-      result: req.cookies.userName
+     // result: req.cookies.userName
+      result: req.session.user.userName
     })
   }
   else {
@@ -152,8 +165,11 @@ router.get("/checkLogin", (req, res, next) => {
   }
 })
 
+
+//购物车列表
 router.get("/cartList", (req, res, next) => {
-   const userId = req.cookies.userId
+  // const userId = req.cookies.userId
+   const userId = req.session.user.userId
    User.findOne({userId:userId}, (err, doc) => {
      if(err) {
          res.json({
@@ -173,8 +189,11 @@ router.get("/cartList", (req, res, next) => {
    })
 })
 
+
+//删除商品
 router.post("/cartDel", (req, res, next) => {
-  const userId = req.cookies.userId,
+ // const userId = req.cookies.userId,
+  const userId = req.session.user.userId,
         productId = req.body.productId
   User.update({ userId: userId }, {$pull:{'cartList': {'productId':productId}}}, (err, doc) => {
     if(err) {
@@ -195,8 +214,10 @@ router.post("/cartDel", (req, res, next) => {
 })
 
 
+//编辑购物车
 router.post("/cartEdit",(req, res, next) => {
-    const userId = req.cookies.userId,
+    //const userId = req.cookies.userId,
+    const userId = req.session.user.userId,
           productId = req.body.productId,
           productNum = req.body.productNum,
           checked = req.body.checked
@@ -221,9 +242,10 @@ router.post("/cartEdit",(req, res, next) => {
     })  
 })
 
-
+//全选
 router.post("/editCheckAll", (req, res, next) => {
-  const userId = req.cookies.userId,
+  //const userId = req.cookies.userId,
+  const userId = req.session.user.userId,
       checkAll = req.body.checkAll ? 1 : 0
   User.findOne({userId:userId}, (err, user) => {
     if(err){
@@ -258,8 +280,10 @@ router.post("/editCheckAll", (req, res, next) => {
 })
 
 
+//地址列表
 router.get('/addressList', (req, res, next) => {
-  const userId = req.cookies.userId
+  //const userId = req.cookies.userId
+  const userId = req.session.user.userId
   User.findOne({userId: userId}, (err, doc) => {
     if(err) {
       res.json({
@@ -288,8 +312,10 @@ router.get('/addressList', (req, res, next) => {
 })
 
 
+//设置默认地址
 router.post('/setDefault', (req, res, next) => {
-  const userId = req.cookies.userId,
+  //const userId = req.cookies.userId,
+  const userId = req.session.user.userId,
         addressId = req.body.addressId
    User.findOne({userId: userId}, (err, doc) => {
     if(err) {
@@ -334,8 +360,81 @@ router.post('/setDefault', (req, res, next) => {
 })
 
 
+//添加地址
+router.post('/addAdress', (req, res, next) => {
+  const userId = req.session.user.userId,
+        newAddress = req.body.newAddress,
+        userName = newAddress.userName,
+        streetName = newAddress.streetName,
+        postCode = newAddress.postCode,
+        tel = newAddress.tel
+   let  isDefault = newAddress.isDefault
+  /*
+            "addressId" : "10008",
+            "userName" : "Joke",
+            "streetName" : "广州市海珠区海珠国家湿地公园",
+            "postCode" : "100010",
+            "tel" : "13619898722",
+            "isDefault" : false
+  */
+  User.findOne({userId: userId})
+      .then( doc => {
+        console.log(doc.addressList)
+        const addressId = Math.round(Math.random() * 100000) + ''
+        const addressList = doc.addressList
+        console.log(isDefault)
+        if(isDefault) {
+          console.log('isDefaualt')
+          addressList.forEach( address => {
+              console.log( address.isDefault )
+              address.isDefault = false
+          })
+        } else {
+          if(addressList.length === 0) {
+            isDefault = true
+          }
+        }
+        addressList.push({
+          userName,
+          addressId,
+          streetName: streetName,     
+          postCode: postCode,
+          tel: tel,
+          isDefault: isDefault
+        })
+        doc.save((AddressErr, AddressDoc) => {
+            if(AddressErr) {
+              res.json({
+                status: '404',
+                msg: AddressErr.message,
+                result: ''
+              })
+            }
+            else {
+                res.json({
+                    status: '200',
+                    msg: 'OK',
+                    result: 'success'
+                })
+            }
+        })
+
+        console.log(doc.addressList)
+      }) 
+      .catch( err => {
+        res.json({
+            status: '400',
+            msg: err.message,
+            result: ''
+          })
+      })
+})
+
+
+//删除地址
 router.post('/delAddress', (req, res, next) => {
-  const userId = req.cookies.userId,
+  //const userId = req.cookies.userId,
+  const userId = req.session.user.userId,
         addressId = req.body.addressId
     User.update({ userId: userId }, {$pull:{'addressList': {'addressId':addressId}}},
      (err, doc) => {
@@ -353,11 +452,13 @@ router.post('/delAddress', (req, res, next) => {
           })
         }
     })
-        
 })
 
+
+//支付【并无实际支付功能，为创建订单功能】
 router.post("/payMent", (req, res, next) => {
-  const userId = req.cookies.userId,
+  //const userId = req.cookies.userId,
+  const userId = req.session.user.userId,
         addressId = req.body.addressId 
         orderTotal = req.body.orderTotal 
   User.findOne({ userId: userId}, (err, doc) => {
@@ -432,8 +533,10 @@ router.post("/payMent", (req, res, next) => {
 })
 
 
+//订单确认
 router.get("/orderDetail", (req, res, next) => {
-  const userId = req.cookies.userId,
+  //const userId = req.cookies.userId,
+  const userId = req.session.user.userId,
         orderId = req.param("orderId")
   User.findOne({ userId: userId }, (err, userInfo) => {
     if(err){
@@ -484,9 +587,13 @@ router.get("/orderDetail", (req, res, next) => {
   })
 })
 
+
+//获得购物车数量
 router.get("/getCartCount", (req, res, next) => {
-    if(req.cookies && req.cookies.userId) {
-      const userId = req.cookies.userId
+   // if(req.cookies && req.cookies.userId) {
+    if(req.session.user && req.session.user.userId) {
+    //  const userId = req.cookies.userId
+      const userId = req.session.user.userId
       User.findOne({ userId: userId }, (err, doc) => {
         if(err) {
           res.json({

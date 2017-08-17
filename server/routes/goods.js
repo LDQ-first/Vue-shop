@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
 const Goods = require('../models/goods.js')
-
+mongoose.Promise = global.Promise
 
 mongoose.connect('mongodb://localhost:27017/shopdb')
 
@@ -65,8 +65,12 @@ router.get('/list', (req, res, next) => {
    })
 })
 
+
+//添加购物车
 router.post("/addCart", (req, res, next) => {
-    const userId = req.cookies.userId,productId = req.body.productId
+    //const userId = req.cookies.userId,
+    const userId = req.session.user.userId,
+          productId = req.body.productId
     const User = require('../models/users.js')
     User.findOne({ userId:userId }, (err, doc) => {
         if(err) {
