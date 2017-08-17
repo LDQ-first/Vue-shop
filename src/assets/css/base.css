@@ -1296,6 +1296,10 @@ html {
     margin-top: 0;
   }
 
+   .md-modal .btn-wrap>div {
+     flex: 1
+   }
+
   .md-modal .btn-wrap .btn {
     -webkit-box-flex: 1;
     -webkit-flex: 1;

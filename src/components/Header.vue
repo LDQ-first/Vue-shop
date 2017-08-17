@@ -52,7 +52,7 @@
             <div class="md-content">
               <div class="confirm-tips">
                 <div class="error-wrap">
-                  <span class="error error-show" v-show="errorTip">用户名或者密码错误</span>
+                  <span class="error error-show" v-show="errorTip">{{errorTipText}}</span>
                 </div>
                 <ul>
                   <li class="regi_form_input">
@@ -62,6 +62,10 @@
                   <li class="regi_form_input noMargin">
                     <i class="icon IconPwd"></i>
                     <input type="password" tabindex="2"  name="password" v-model="userPwd" class="regi_login_input regi_login_input_left login-input-no input_text" placeholder="Password" @keyup.enter="login">
+                  </li>
+                  <li class="regi_form_input captcha_form_input">
+                    <input type="text" tabindex="2" name="loginname" v-model="captcha" class="regi_login_input regi_login_input_left captcha_input" placeholder="验证码" data-type="captcha">
+                   <span class="captcha_img" v-html="captchaImg" @click="getCaptcha" title="更换验证码"></span>
                   </li>
                 </ul>
               </div>
@@ -84,7 +88,7 @@
           <div slot="title" class="md-title">注册</div>
           <div slot="message">
             <div class="error-wrap">
-              <span class="error error-show" v-show="errorTip">用户已存在</span>
+              <span class="error error-show" v-show="signUpErrorTip">{{signUpErrorText}}</span>
             </div>
             <ul>
               <li class="regi_form_input">
@@ -94,6 +98,10 @@
               <li class="regi_form_input noMargin">
                 <i class="icon IconPwd"></i>
                 <input type="password" tabindex="2"  name="password" v-model="userPwd" class="regi_login_input regi_login_input_left login-input-no input_text" placeholder="Password" @keyup.enter="login">
+              </li>
+              <li class="regi_form_input captcha_form_input">
+                <input type="text" tabindex="2" name="loginname" v-model="captcha" class="regi_login_input regi_login_input_left captcha_input" placeholder="验证码" data-type="captcha">
+                <span class="captcha_img" v-html="captchaImg" @click="getCaptcha" title="更换验证码"></span>
               </li>
             </ul>
           </div>
@@ -115,10 +123,15 @@
               userName:'admin',
               userPwd:'123456',
               errorTip:false,
+              errorTipText: '用户名或者密码错误',
               loginModalFlag:false,
               mdShow: false,
               isLogin: false,
               signupModalFlag: false,
+              signUpErrorTip: false,
+              signUpErrorText: '用户已存在',
+              captcha: '',
+              captchaImg: '验证码'
             }
         },
         computed: {
@@ -142,7 +155,6 @@
                  .then(res => res.data)
                  .then(data => {
                    if(data.status === '200') {
-                     // this.nickName = data.result
                     this.$store.commit("updateUserInfo", data.result)
                     this.getCartCount()
                     this.isLogin = true
@@ -155,10 +167,26 @@
                    }
                  })
           },
+          getCaptcha() {
+            axios.get('/users/captcha')
+                 .then(res => res.data)
+                 .then(data => {
+                   if(data.status === '200') {
+                     const captchaImg = data.result.data,
+                           captchaText = data.result.text
+
+                    this.captchaImg = captchaImg
+                    console.log(captchaText)
+                   }
+
+                 })
+          },
           showLoginModal() {
+            this.getCaptcha()
             this.errorTip = false
             this.userName = 'admin',
             this.userPwd = '123456',
+            this.captcha = ''
             this.loginModalFlag = true
           },
           Login() {
@@ -167,18 +195,23 @@
             }
             axios.post("/users/login", {
               userName: this.userName,
-              userPwd: this.userPwd
+              userPwd: this.userPwd,
+              captcha: this.captcha
             }).then((response) => {
                 let res = response.data
-                if(res.status === "200") {
+                if(res.status === "500") {
+                  this.errorTipText = res.msg
+                  this.errorTip = true
+                }
+                else if(res.status === "200") {
                   this.errorTip = false
                   this.loginModalFlag = false
                   this.signupModalFlag = false
                   this.isLogin = true
-                //  this.nickName = res.result.userName
                  this.$store.commit("updateUserInfo", res.result.userName)
                  this.getCartCount()
                 }else {
+                  this.errorTipText = res.msg
                   this.errorTip = true
                 }
             })
@@ -188,7 +221,6 @@
                   .then( res => res.data )
                   .then( data => {
                      if(data.status === "200") {
-                       //  this.nickName = ''
                        this.isLogin = false
                          this.$store.commit("updateUserInfo", '')
                          this.$store.commit("initCartCount", 0)
@@ -220,32 +252,32 @@
             }
           },
           showSignupModal() {
+            this.getCaptcha()
             this.signupModalFlag = true
             this.userName = ''
             this.userPwd = ''
-            this.errorTip = false
+            this.captcha = ''
+            this.signUpErrorTip = false
           },
           SignUp() {
             axios.post('/users/signup',  {
               userName: this.userName,
-              userPwd: this.userPwd
+              userPwd: this.userPwd,
+              captcha: this.captcha
             }).then(res => res.data)
               .then(data => {
                 console.log(data)
-                if(data.status === '200') {
+                if(data.status === "500") {
+                  this.signUpErrorText = data.msg
+                  this.signUpErrorTip = true
+                }
+                else if(data.status === '200') {
                   this.userName = data.result.userName
                   this.userPwd = data.result.userPwd
                   this.Login()
-                  /*
-                    this.signupModalFlag = false
-                    this.errorTip = false
-                    this.isLogin = true
-                    this.$store.commit("updateUserInfo", data.result.userName)
-                    this.getCartCount()
-                  this.userName = data.result.userName
-                  this.userPwd = data.result.userPwd*/
                 } else {
-                    this.errorTip = true
+                    this.signUpErrorText = data.msg
+                    this.signUpErrorTip = true
                 }
               })
           }

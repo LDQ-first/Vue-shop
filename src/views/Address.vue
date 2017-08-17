@@ -126,8 +126,9 @@
               </div>
             </div>
             <div class="next-btn-wrap">
-              <router-link class="btn btn--m btn--red" :to="{path:'orderConfirm',query:{'addressId':selectedAddrId}}" 
-              :class="{'btn--dis': !addressList.length}">下一步</router-link>
+              <router-link class="btn btn--m btn--red" :to="{path: (!addressList.length || !hasDefault) ? '' : 'orderConfirm',
+              query: (!addressList.length || !hasDefault) ? '' : {'addressId':selectedAddrId}}" 
+              :class="{'btn--dis': !addressList.length || !hasDefault}" :disabled="{'true':  !addressList.length || !hasDefault}">下一步</router-link>
             </div>
           </div>
         </div>
@@ -191,6 +192,7 @@
                 addressErrorTip: false,
                 addressErrorText: '所有填空必填',
                 addressModalFlag: false,
+                hasDefault: false,
                 newAddressTitle: {
                   "userName" : "收货人",
                   "streetName" : "地址",
@@ -229,14 +231,20 @@
                       if(data.status === '200') {
                           for(let i in data.result) {
                             if(data.result[i].isDefault) {
+                              this.hasDefault = true
                               data.result.splice(0, 0 , data.result.splice(i,1)[0])
+                              break;
+                            }
+                            else {
+                              this.hasDefault = false
                             }
                           }
                           this.addressList = data.result
                           this.selectedAddrId = this.addressList[0].addressId
                         }
                         else {
-                          console.log(this.addressList.length === 0)
+                          this.addressList = data.result
+                          this.hasDefault = false
                         }
                     })
             },

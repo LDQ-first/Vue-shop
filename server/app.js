@@ -70,7 +70,7 @@ app.use((req, res, next) => {
       next()
     }
     else {
-      if( req.path === '/users/signup' || req.path === '/goods/list' ||
+      if( req.path === '/users/signup' || req.path === '/users/captcha' || req.path === '/goods/list' ||
        req.originalUrl === '/users/login' || req.originalUrl === '/users/logout') {
         next()
       }

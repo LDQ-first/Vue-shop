@@ -1,15 +1,47 @@
 const express = require('express')
 const router = express.Router()
 const User = require('./../models/users')
+const svgCaptcha = require('svg-captcha')
 require('../util/util')
 
 /* GET users listing. */
 router.get('/', (req, res, next) => {
-  res.send('respond with a resource');
+  res.send('respond with a resource')
 });
+
+
+router.get('/captcha', (req, res, next) => {
+  const captcha = svgCaptcha.create({
+    background: "#cc9966",
+    color: true
+  })
+	req.session.captcha = captcha.text
+	
+	res.set('Content-Type', 'image/svg+xml')
+  res.json({
+    status: '200',
+    msg: 'OK',
+    result: captcha
+  })
+/*	res.status(200).send(captcha.data);*/
+})
+
+
 
 //注册
 router.post('/signup', (req, res, next) => {
+  const captcha = req.body.captcha.toLowerCase()
+    console.log(captcha)
+    console.log(req.session.captcha.toLowerCase())
+  if(req.session.captcha.toLowerCase() !== captcha) {
+    res.json({
+      status: '500',
+      msg: '验证码有错',
+      result: ''
+    })
+     return
+  }
+  console.log('param')
   const param = {
      userName: req.body.userName,
      userPwd: req.body.userPwd
@@ -56,6 +88,18 @@ router.post('/signup', (req, res, next) => {
 
 //登录
 router.post('/login', (req, res, next) => {
+  const captcha = req.body.captcha.toLowerCase()
+    console.log(captcha)
+    console.log(req.session.captcha.toLowerCase())
+  if(req.session.captcha.toLowerCase() !== captcha) {
+    res.json({
+      status: '500',
+      msg: '验证码有错',
+      result: ''
+    })
+     return
+  }
+  console.log('param')
    const param = {
      userName: req.body.userName,
      userPwd: req.body.userPwd
