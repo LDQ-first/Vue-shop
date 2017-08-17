@@ -72,11 +72,11 @@ router.post('/login', (req, res, next) => {
         // console.log(doc)
          res.cookie("userId", doc.userId, {
            path: '/',
-           maxAge: 1000 * 60 * 60
+           maxAge: 1000 * 60 * 60 * 24 * 7
          })
          res.cookie("userName", doc.userName, {
            path: '/',
-           maxAge: 1000 * 60 * 60
+           maxAge: 1000 * 60 * 60 * 24 * 7
          })
           // 检查 session 中的 isVisit 字段
           // 如果存在则增加一次，否则为 session 设置 isVisit 字段，并初始化为 1。

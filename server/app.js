@@ -36,7 +36,7 @@ app.use(session({
  //强制保存session即使它并没有变化 （默认： true）
  //saveUninitialized:
  //初始化session时是否保存到存储。默认为true， 但是(后续版本)有可能默认失效，所以最好手动添加。
-cookie:  { maxAge: 60 * 1000 * 60 },
+cookie:  { maxAge: 60 * 1000 * 60 * 24 * 7 },
 //session cookie设置 设置返回到前端key的属性，默认值为{ path: ‘/’, httpOnly: true, secure: false, maxAge: null }。
 //genid - 生成新session ID的函数 （默认使用uid2库）
  //rolling: false,

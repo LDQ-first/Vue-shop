@@ -145,15 +145,15 @@
           <div slot="title" class="md-title">添加地址</div>
           <div slot="message">
             <div class="error-wrap">
-              <span class="error error-show" v-show="adressErrorTip">所有填空必填</span>
+              <span class="error error-show" v-show="addressErrorTip">{{addressErrorText}}</span>
             </div>
             <ul>
               <li class="regi_form_input address_form_input" v-for="(item, index) of newAddress" key="index">
                 <span class="input_title">{{newAddressTitle[index]}}</span>
                 <input type="text" tabindex="2"  :name="`${index}`" v-model="newAddress[index]" v-if="isInput(index)"
-                class="regi_login_input address_add_input regi_login_input_left login-input-no input_text" >
-                <textarea name="address" class="address_textarea" v-model="newAddress.streetName" 
-                  v-else-if="index === 'streetName'"></textarea>
+                class="regi_login_input address_add_input regi_login_input_left login-input-no input_text" @blur="checkType(index)">
+                <textarea name="address" class="address_textarea" v-model="newAddress.streetName" @blur="checkType(index)"
+                  v-else-if="index === 'streetName'" placeholder="地址少于不能10个字"></textarea>
                 <div class="cart-item-check" v-else="index === 'isDefault'">
                   <a href="javascipt:;" class="checkbox-btn item-check-btn" :class="{'check':item}" 
                     @click.prevent="editDefault('checked',item)">
@@ -188,13 +188,14 @@
                 addressList: [],
                 isMdShow: false,
                 addressId: '',
-                adressErrorTip: false,
+                addressErrorTip: false,
+                addressErrorText: '所有填空必填',
                 addressModalFlag: false,
                 newAddressTitle: {
                   "userName" : "收货人",
                   "streetName" : "地址",
                   "postCode" : "邮编",
-                  "tel" : "电话",
+                  "tel" : "手机",
                   "isDefault" : "是否为默认地址"
                 },
                 newAddress: {
@@ -285,21 +286,25 @@
             addAddress() {
               for(let key of Object.keys(this.newAddress)) {
                 if(this.newAddress[key] === '') {
-                  this.adressErrorTip = true
+                  this.addressErrorText = '所有填空必填'
+                  this.addressErrorTip = true
                   return
                 }
               }
               
-              axios.post('/users/addAdress', {
-                newAddress: this.newAddress
-              })
-                .then(res => res.data)
-                .then(data => {
-                  if(data.status === '200') {
-                    this.addressModalFlag = false
-                    this.init()
-                  }
-                })
+              if(!this.addressErrorTip) {
+                 axios.post('/users/addAdress', {
+                    newAddress: this.newAddress
+                  })
+                    .then(res => res.data)
+                    .then(data => {
+                      if(data.status === '200') {
+                        this.addressModalFlag = false
+                        this.init()
+                      }
+                    })
+              }
+             
             },
             closeaddressModal() {
               this.addressModalFlag = false
@@ -322,6 +327,46 @@
                   "tel" : "",
                   "isDefault" : false
                 }
+            },
+            checkType(index) {
+              if(index === 'postCode') {
+                const re = /^[1-9][0-9]{5}$/
+                if(!re.test(this.newAddress.postCode)) {
+                  this.addressErrorText = '邮编有错'
+                  this.addressErrorTip = true
+                }
+                else {
+                  this.addressErrorTip = false
+                }
+              }
+              else if(index === 'tel') {
+                const mpRe = /^1[34578]\d{9}$/
+                if(!mpRe.test(this.newAddress.tel) ) {
+                  this.addressErrorText = '手机号码有错'
+                  this.addressErrorTip = true
+                }
+                else {
+                  this.addressErrorTip = false
+                }
+              } else if(index === 'streetName') {
+                if(this.StrLen(this.newAddress.streetName) < 10) {
+                   this.addressErrorText = '地址少于不能10个字'
+                   this.addressErrorTip = true
+                }
+                else {
+                  this.addressErrorTip = false
+                }
+              }
+            },
+           StrLen(sString) {
+              let j = 0;
+              const s = sString;
+              if (s=="") return j;
+              for (let i = 0; i < s.length; i++) {
+                  if (s.substr(i,1).charCodeAt(0)>255) j = j + 2;
+                  else j++
+              }
+              return j;
             }
         }
     }
