@@ -54,17 +54,26 @@
                 <div class="error-wrap">
                   <span class="error error-show" v-show="errorTip">{{errorTipText}}</span>
                 </div>
+                <div class="right-wrap">
+                  <span class="right right-show" v-show="rightTip">{{rightTipText}}</span>
+                </div>
                 <ul>
                   <li class="regi_form_input">
                     <i class="icon IconPeople"></i>
-                    <input type="text" tabindex="1" name="loginname" v-model="userName" class="regi_login_input regi_login_input_left" placeholder="User Name" data-type="loginname">
+                    <input type="text" tabindex="1" name="loginname" v-model="userName"
+                     @blur="findisRepeated"  @input="clearTip"
+                    class="regi_login_input regi_login_input_left" placeholder="User Name" data-type="loginname" >
                   </li>
                   <li class="regi_form_input noMargin">
                     <i class="icon IconPwd"></i>
-                    <input type="password" tabindex="2"  name="password" v-model="userPwd" class="regi_login_input regi_login_input_left login-input-no input_text" placeholder="Password" @keyup.enter="login">
+                    <input type="password" tabindex="2"  name="password" v-model="userPwd" 
+                    @blur="checkPwd" @input="clearTip"
+                    class="regi_login_input regi_login_input_left login-input-no input_text" placeholder="Password">
                   </li>
                   <li class="regi_form_input captcha_form_input">
-                    <input type="text" tabindex="2" name="loginname" v-model="captcha" class="regi_login_input regi_login_input_left captcha_input" placeholder="验证码" data-type="captcha">
+                    <input type="text" tabindex="2" name="loginname" v-model="captcha" 
+                    @blur="isCaptchaTrue" @input="clearTip"
+                    class="regi_login_input regi_login_input_left captcha_input" placeholder="验证码" data-type="captcha">
                    <span class="captcha_img" v-html="captchaImg" @click="getCaptcha" title="更换验证码"></span>
                   </li>
                 </ul>
@@ -90,17 +99,28 @@
             <div class="error-wrap">
               <span class="error error-show" v-show="signUpErrorTip">{{signUpErrorText}}</span>
             </div>
+            <div class="right-wrap">
+              <span class="right right-show" v-show="signUpRightTip">{{signUpRightTipText}}</span>
+            </div>
             <ul>
               <li class="regi_form_input">
                 <i class="icon IconPeople"></i>
-                <input type="text" tabindex="1" name="loginname" v-model="userName" class="regi_login_input regi_login_input_left" placeholder="User Name" data-type="loginname">
+                <input type="text" tabindex="1" name="loginname" v-model="userName" class="regi_login_input regi_login_input_left" 
+                  placeholder="用户名" data-type="loginname" @blur="findisRepeated" @input="clearTip">
               </li>
               <li class="regi_form_input noMargin">
                 <i class="icon IconPwd"></i>
-                <input type="password" tabindex="2"  name="password" v-model="userPwd" class="regi_login_input regi_login_input_left login-input-no input_text" placeholder="Password" @keyup.enter="login">
+                <input type="password" tabindex="2"  name="password" v-model="userPwd" class="regi_login_input regi_login_input_left login-input-no input_text" 
+                  placeholder="密码" @input="clearTip">
+              </li>
+              <li class="regi_form_input noMargin">
+                <i class="icon IconPwd"></i>
+                <input type="password" tabindex="2"  name="password" v-model="userPwdAgain" class="regi_login_input regi_login_input_left login-input-no input_text" 
+                  placeholder="再次确认密码" @blur="isDiff" @input="clearTip">
               </li>
               <li class="regi_form_input captcha_form_input">
-                <input type="text" tabindex="2" name="loginname" v-model="captcha" class="regi_login_input regi_login_input_left captcha_input" placeholder="验证码" data-type="captcha">
+                <input type="text" tabindex="2" name="loginname" v-model="captcha" class="regi_login_input regi_login_input_left captcha_input" 
+                  placeholder="验证码" data-type="captcha" @blur="isCaptchaTrue" @input="clearTip">
                 <span class="captcha_img" v-html="captchaImg" @click="getCaptcha" title="更换验证码"></span>
               </li>
             </ul>
@@ -122,14 +142,19 @@
             return {
               userName:'admin',
               userPwd:'123456',
+              userPwdAgain: '',
               errorTip:false,
               errorTipText: '用户名或者密码错误',
+              rightTip: false,
+              rightTipText: '',
               loginModalFlag:false,
               mdShow: false,
               isLogin: false,
               signupModalFlag: false,
               signUpErrorTip: false,
               signUpErrorText: '用户已存在',
+              signUpRightTip: false,
+              signUpRightTipText: '',
               captcha: '',
               captchaImg: '验证码'
             }
@@ -167,6 +192,41 @@
                    }
                  })
           },
+          clearTip() {
+              this.errorTip = false
+              this.errorTipText =  '用户名或者密码错误'
+              this.rightTip =  false
+              this.rightTipText =  ''
+              this.signUpErrorTip =  false
+              this.signUpErrorText =  '用户已存在'
+              this.signUpRightTip =  false
+              this.signUpRightTipText = ''
+          },
+          
+          isCaptchaTrue() {
+            if(this.captcha === '') {
+              return
+            }
+            axios.get('/users/isCaptchaTrue',{
+              params:{
+                captcha: this.captcha
+              }
+            }).then(res => res.data)
+              .then(data => {  
+                if(data.status === '200'  ) {
+                   this.signUpRightTip = true
+                   this.signUpRightTipText = data.msg
+                   this.rightTipText = data.msg
+                   this.rightTip = true
+                } 
+                else if(data.status === '500') {
+                   this.signUpErrorTip = true
+                   this.signUpErrorText = data.msg
+                   this.errorTipText = data.msg
+                   this.errorTip = true
+                }
+              })
+          },
           getCaptcha() {
             axios.get('/users/captcha')
                  .then(res => res.data)
@@ -181,17 +241,60 @@
 
                  })
           },
+          findisRepeated() {
+            if(this.userName === '') {
+              return
+            }
+            axios.get('/users/isRepeated', {
+              params:{
+                userName: this.userName
+              }
+            }).then(res => res.data)
+              .then(data => {
+                if(data.status === '200'  ) {
+                   this.signUpRightTip = true
+                   this.signUpRightTipText = data.msg
+                   this.errorTipText = '用户不存在，要先注册'
+                   this.errorTip = true
+                } 
+                else if(data.status === '500') {
+                   this.signUpErrorTip = true
+                   this.signUpErrorTipText = data.msg
+                }
+              })
+          },
+          checkPwd() {
+            if(this.userPwd === '') {
+              return
+            }
+            axios.get('/users/checkPwd', {
+              params:{
+                userName: this.userName,
+                userPwd: this.userPwd
+              }
+            }).then(res => res.data)
+              .then(data => {
+               if(data.status === '500') {
+                   /*if(!this.errorTip) {
+
+                   }*/
+                   this.errorTipText = data.msg
+                   this.errorTip = true
+                }
+              })
+          },
           showLoginModal() {
             this.getCaptcha()
-            this.errorTip = false
-            this.userName = 'admin',
-            this.userPwd = '123456',
+            this.clearTip()
+            this.userName = 'admin'
+            this.userPwd = '123456'
             this.captcha = ''
             this.loginModalFlag = true
           },
           Login() {
             if(!this.userName || !this.userPwd) {
               this.errorTip = true
+              return
             }
             axios.post("/users/login", {
               userName: this.userName,
@@ -210,10 +313,13 @@
                   this.isLogin = true
                  this.$store.commit("updateUserInfo", res.result.userName)
                  this.getCartCount()
-                }else {
-                  this.errorTipText = res.msg
+                } 
+                else if(!this.errorTip) {
+                  this.clearTip()
                   this.errorTip = true
+                  this.errorTipText = res.msg
                 }
+
             })
           },
           Logout() {
@@ -253,13 +359,36 @@
           },
           showSignupModal() {
             this.getCaptcha()
-            this.signupModalFlag = true
+            this.clearTip()
             this.userName = ''
             this.userPwd = ''
+            this.userPwdAgain = ''
             this.captcha = ''
-            this.signUpErrorTip = false
+            this.signupModalFlag = true
+          },
+          isDiff() {
+            if(this.userPwdAgain === '') {
+              return
+            }
+            else if(this.userPwdAgain !== this.userPwd) {
+              this.signUpErrorTip = true
+              this.signUpErrorText = '两次密码不一致'
+            }
+            else {
+              this.signUpRightTip = true
+              this.signUpRightTipText = '两次密码一致'
+            }
           },
           SignUp() {
+            if(!this.userName || !this.userPwd) {
+              this.signUpErrorTip = true
+              this.signUpErrorText = '注册名和密码不能为空'
+              return
+            } else if(this.userPwdAgain !== this.userPwd) {
+              this.signUpErrorTip = true
+              this.signUpErrorText = '两次密码不一致'
+              return
+            }
             axios.post('/users/signup',  {
               userName: this.userName,
               userPwd: this.userPwd,
@@ -276,6 +405,7 @@
                   this.userPwd = data.result.userPwd
                   this.Login()
                 } else {
+                    this.clearTip()
                     this.signUpErrorText = data.msg
                     this.signUpErrorTip = true
                 }

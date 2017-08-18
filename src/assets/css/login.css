@@ -113,12 +113,13 @@ a {
   height:auto;
 }*/
 .captcha_form_input {
-  height: 46px;
+  height: 58px;
   border: none;
 }
 .captcha_form_input .captcha_input {
   left: 0px;
   padding: 10px;
+  height: 58px;
   width: 250px;
   border: 1px solid #CCC;
 }
@@ -126,7 +127,7 @@ a {
   position: absolute;
   right: 0px;
   width: 160px;
-  height: 44px;
+  height: 58px;
   border: 1px solid #CCC;
   cursor: pointer;
 }
@@ -203,6 +204,22 @@ a {
   background: url("/static/icon.png") 0 -100px no-repeat;
 }
 .md-content .error-wrap .error-show{
+  visibility: visible;
+  height: auto;
+}
+
+.right-wrap .right{
+  font-size: 12px;
+  color: #4FAF09;
+  visibility: hidden;
+  display: block;
+  padding: 0 0 7px 17px;
+  line-height: 16px;
+  height: 16px;
+  text-align: left;
+  background: url("/static/icon.png") 0 -200px no-repeat;
+}
+.md-content .right-wrap .right-show{
   visibility: visible;
   height: auto;
 }

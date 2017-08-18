@@ -10,10 +10,27 @@ router.get('/', (req, res, next) => {
 });
 
 
+router.get('/isCaptchaTrue', (req, res, next) => {
+  const captcha = req.param('captcha').toLowerCase()
+  if(req.session.captcha.toLowerCase() !== captcha) {
+    res.json({
+      status: '500',
+      msg: '验证码有错',
+      result: ''
+    })
+     return
+  } else {
+     res.json({
+      status: '200',
+      msg: '验证码正确',
+      result: ''
+    })
+  }
+})
+
 router.get('/captcha', (req, res, next) => {
   const captcha = svgCaptcha.create({
-    background: "#cc9966",
-    color: true
+    background: "#3E96D6"
   })
 	req.session.captcha = captcha.text
 	
@@ -23,10 +40,67 @@ router.get('/captcha', (req, res, next) => {
     msg: 'OK',
     result: captcha
   })
-/*	res.status(200).send(captcha.data);*/
 })
 
 
+router.get('/checkPwd',(req, res, next) => {
+  const param = {
+     userName : req.param('userName'),
+     userPwd : req.param('userPwd')
+  } 
+    User.findOne(param)
+        .then(doc => {
+          if(doc) {
+             res.json({
+              status: '200',
+              msg: '密码正确',
+              result: ''
+            })
+          }
+          else {
+            res.json({
+              status: '500',
+              msg: '密码错误',
+              result: ''
+            })
+          }
+        })
+        .catch(  err => {
+           res.json({
+            status: '404',
+            msg: err.message,
+            result: ''
+          })
+        })
+})
+
+router.get('/isRepeated', (req, res, next) => {
+    const userName = req.param('userName')
+    User.findOne({userName: userName})
+        .then(doc => {
+          if(doc) {
+             res.json({
+              status: '500',
+              msg: '用户已存在',
+              result: ''
+            })
+          }
+          else {
+            res.json({
+              status: '200',
+              msg: '用户不存在，可以注册',
+              result: ''
+            })
+          }
+        })
+        .catch(  err => {
+           res.json({
+            status: '404',
+            msg: err.message,
+            result: ''
+          })
+        })
+})
 
 //注册
 router.post('/signup', (req, res, next) => {
@@ -46,7 +120,7 @@ router.post('/signup', (req, res, next) => {
      userName: req.body.userName,
      userPwd: req.body.userPwd
    }
-   User.findOne({userName: param.userName}, (err, doc) => {
+  /* User.findOne({userName: param.userName}, (err, doc) => {
      if(err) {
          res.json({
             status: '404',
@@ -82,7 +156,43 @@ router.post('/signup', (req, res, next) => {
        }
      
      }
-   })
+   })*/
+
+    User.findOne({userName: param.userName})
+        .then( doc => {
+           if(doc) {
+              res.json({
+                status: '400',
+                msg: '用户已存在',
+                result: ''
+              })
+            } else {
+              param.userId = Math.floor(Math.random() * 1000000000) + ''
+              const newUser = new User(param)
+              newUser.save((err, user) => {
+                if(err) {
+                  res.json({
+                    status: '500',
+                    msg: '用户创建失败',
+                    result: ''
+                  })
+                } else {
+                    res.json({
+                      status: '200',
+                      msg: '用户创建成功',
+                      result: param
+                    })
+                }
+              })
+            }
+        })
+        .catch(  err => {
+           res.json({
+            status: '404',
+            msg: err.message,
+            result: ''
+          })
+        })
 })
 
 
