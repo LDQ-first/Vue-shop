@@ -133,8 +133,9 @@
 </template>
 
 <script>
-    import '@/assets/css/login.css'
-    import Modal from './Modal'
+    import '@/assets/css/login.scss'
+
+    const Modal = resolve => require(['@/components/Modal'], resolve)
     import axios from 'axios'
     import { mapState } from 'vuex'
     export default {
@@ -275,9 +276,6 @@
             }).then(res => res.data)
               .then(data => {
                if(data.status === '500') {
-                   /*if(!this.errorTip) {
-
-                   }*/
                    this.errorTipText = data.msg
                    this.errorTip = true
                 }
@@ -294,8 +292,10 @@
           Login() {
             if(!this.userName || !this.userPwd) {
               this.errorTip = true
+               this.errorTipText = '用户名或密码不能为空'
               return
-            }
+            } 
+
             axios.post("/users/login", {
               userName: this.userName,
               userPwd: this.userPwd,
@@ -314,10 +314,11 @@
                  this.$store.commit("updateUserInfo", res.result.userName)
                  this.getCartCount()
                 } 
-                else if(!this.errorTip) {
-                  this.clearTip()
-                  this.errorTip = true
-                  this.errorTipText = res.msg
+                else {
+                  setTimeout(() => {
+                    this.errorTip = true
+                    this.errorTipText = res.msg
+                  }, 800)
                 }
 
             })
@@ -380,6 +381,7 @@
             }
           },
           SignUp() {
+            
             if(!this.userName || !this.userPwd) {
               this.signUpErrorTip = true
               this.signUpErrorText = '注册名和密码不能为空'
@@ -405,9 +407,10 @@
                   this.userPwd = data.result.userPwd
                   this.Login()
                 } else {
-                    this.clearTip()
-                    this.signUpErrorText = data.msg
-                    this.signUpErrorTip = true
+                    setTimeout(()=> {
+                       this.signUpErrorText = data.msg
+                       this.signUpErrorTip = true
+                    },800)  
                 }
               })
           }

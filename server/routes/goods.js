@@ -72,15 +72,10 @@ router.post("/addCart", (req, res, next) => {
     const userId = req.session.user.userId,
           productId = req.body.productId
     const User = require('../models/users.js')
-    User.findOne({ userId:userId }, (err, doc) => {
-        if(err) {
-            res.json({
-                status: "404",
-                msg: err.message
-            })
-        }
-        else {
-            if(doc) {
+
+     User.findOne({ userId:userId })
+         .then(doc => {
+             if(doc) {
                 let goodsItem = '';
                 doc.cartList.forEach((item, idex) => {
                     if(item.productId == productId) {
@@ -106,15 +101,9 @@ router.post("/addCart", (req, res, next) => {
                     })
                 }
                 else {
-                    Goods.findOne({productId:productId}, (goodsErr, goodsDoc) => {
-                        if(goodsErr) {
-                            res.json({
-                                status: '404',
-                                msg: goodsErr.message
-                            })
-                        }
-                        else {
-                            if(goodsDoc) {
+                    Goods.findOne({productId:productId})
+                         .then(goodsDoc => {
+                              if(goodsDoc) {
                                 goodsDoc.productNum = 1
                                 goodsDoc.checked = 1
                                 doc.cartList.push(goodsDoc)
@@ -134,14 +123,28 @@ router.post("/addCart", (req, res, next) => {
                                     }
                                 })
                             }
-                        }
-                    })
+                         })
+                         .catch(err => {
+                            res.json({
+                                status: "404",
+                                msg: err.message
+                            })
+                         })
                 }
-                
             }
-            
-        }
-    })
+            else {
+                res.json({
+                    status: "404",
+                    msg: err.message
+                })
+            }
+         })
+         .catch(err => {
+              res.json({
+                status: "404",
+                msg: err.message
+            })
+         })
 })
 
 module.exports = router

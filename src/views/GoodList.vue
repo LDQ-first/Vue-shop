@@ -36,10 +36,10 @@
                     </div>
                     <div class="main">
                       <div class="name">{{item.productName}}</div>
-                      <div class="price">{{item.salePrice | currency('￥')}}</div>
-                      <div class="btn-area">
-                        <a href="javascript:;" class="btn btn--m" @click="addCart(item.productId)">加入购物车</a>
-                      </div>
+                      <div class="price">{{item.salePrice | currency('￥')}}</div>   
+                        <div class="btn-area">
+                          <a href="javascript:;" class="btn btn--m" @click="addCart(item.productId)">加入购物车</a>
+                        </div>
                     </div>
                   </li>
                 </ul>
@@ -76,12 +76,15 @@
     </div>
 </template>
 <script>
-    import '@/assets/css/base.css'
-    import '@/assets/css/product.css'
-    import NavHeader from '@/components/Header'
-    import NavFooter from '@/components/Footer'
-    import Bread from '@/components/Bread'
-    import Modal from '@/components/Modal'
+    import '@/assets/css/base.scss'
+    import '@/assets/css/product.scss'
+   
+
+    const NavHeader = resolve => require(['@/components/Header'], resolve)
+    const NavFooter = resolve => require(['@/components/Footer'], resolve)
+    const Bread = resolve => require(['@/components/Bread'], resolve)
+    const Modal = resolve => require(['@/components/Modal'], resolve)
+
     import axios from 'axios'
     export default{
         data(){

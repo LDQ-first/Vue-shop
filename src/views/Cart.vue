@@ -164,11 +164,13 @@
   }
 </style>
 <script>
-    import '@/assets/css/checkout.css'
-    import NavHeader from '@/components/Header'
-    import NavFooter from '@/components/Footer'
-    import NavBread from '@/components/Bread'
-    import Modal from '@/components/Modal'
+    import '@/assets/css/checkout.scss'
+
+    const NavHeader = resolve => require(['@/components/Header'], resolve)
+    const NavFooter = resolve => require(['@/components/Footer'], resolve)
+    const NavBread = resolve => require(['@/components/Bread'], resolve)
+    const Modal = resolve => require(['@/components/Modal'], resolve)
+    
     import axios from 'axios'
     export default {
         data() {

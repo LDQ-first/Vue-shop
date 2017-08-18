@@ -38,9 +38,11 @@
     </div>
 </template>
 <script>
-    import NavHeader from '@/components/Header'
-    import NavFooter from '@/components/Footer'
-    import NavBread from '@/components/Bread'
+
+    const NavHeader = resolve => require(['@/components/Header'], resolve)
+    const NavFooter = resolve => require(['@/components/Footer'], resolve)
+    const NavBread = resolve => require(['@/components/Bread'], resolve)
+    
     import axios from 'axios'
     export default{
         data(){

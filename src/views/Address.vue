@@ -158,7 +158,7 @@
                 <div class="cart-item-check" v-else="index === 'isDefault'">
                   <a href="javascipt:;" class="checkbox-btn item-check-btn" :class="{'check':item}" 
                     @click.prevent="editDefault('checked',item)">
-                    <svg class="icon icon-ok">
+                    <svg class="icon-ok">
                       <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-ok"></use>
                     </svg>
                   </a>
@@ -175,10 +175,10 @@
 </template>
 
 <script>
-    import NavHeader from '@/components/Header'
-    import NavFooter from '@/components/Footer'
-    import NavBread from '@/components/Bread'
-    import Modal from '@/components/Modal'
+    const NavHeader = resolve => require(['@/components/Header'], resolve)
+    const NavFooter = resolve => require(['@/components/Footer'], resolve)
+    const NavBread = resolve => require(['@/components/Bread'], resolve)
+    const Modal = resolve => require(['@/components/Modal'], resolve)
     import axios from 'axios'
     export default{
         data() {
