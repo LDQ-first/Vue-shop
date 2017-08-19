@@ -33,12 +33,12 @@
                 :class="{'checked': checkIndex == index }" @click="checkIndex = index; ">
                     <div>
                         <ul class="order-list">
-                            <li>订单ID: {{item.orderId}}</li>
-                            <li class="total">订单总价: {{item.orderTotal | currency('￥')}}</li>
-                            <li class="date">创建时间: {{item.createDate}}</li>
-                            <li class="user">收货人: {{item.addressInfo.userName}}</li>
-                            <li class="tel">手机: {{item.addressInfo.tel}}</li>
-                            <li class="street">收货地址: {{item.addressInfo.streetName}}</li>
+                            <li><strong>订单ID: </strong>{{item.orderId}}</li>
+                            <li class="total"><strong>订单总价: </strong>{{item.orderTotal | currency('￥')}}</li>
+                            <li class="date"><strong>创建时间: </strong>{{item.createDate}}</li>
+                            <li class="user"><strong>收货人: </strong>{{item.addressInfo.userName}}</li>
+                            <li class="tel"><strong>手机: </strong>{{item.addressInfo.tel}}</li>
+                            <li class="street"><strong>收货地址: </strong>{{item.addressInfo.streetName}}</li>
                         </ul>
                         <div class="more">
                             <a href="javascript:;" @click="checkIndex = index;enterDetail()">详细信息</a>

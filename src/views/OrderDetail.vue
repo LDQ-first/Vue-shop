@@ -52,19 +52,25 @@
             <ul class="goods-list">
               <li v-for="(good, index) in goodsList" key="index" class="goods-item">
                   <img :src="`static/${good.productImage}`" alt="">
-                  <h3>商品：{{good.productName}}</h3>
-                  <span class="item-sp">价格：{{good.salePrice | currency('￥')}}</span>
-                  <span class="item-sp">数量：{{good.productNum}}</span>
-                  <span class="item-sp">总价：{{(good.salePrice * good.productNum) | currency('￥')}}</span>
+                  <h3><strong>商品：</strong>{{good.productName}}</h3>
+                  <span class="item-sp"><strong>价格：</strong>{{good.salePrice | currency('￥')}}</span>
+                  <span class="item-sp"><strong>数量：</strong>{{good.productNum}}</span>
+                  <span class="item-sp"><strong>总价：</strong>{{(good.salePrice * good.productNum) | currency('￥')}}</span>
               </li>
             </ul>
             <ul class="order-list">
-                <li>订单ID: {{orderList.orderId}}</li>
-                <li class="total">订单总价：{{orderList.orderTotal | currency('￥')}}</li>
-                <li class="date">创建时间：{{orderList.createDate}}</li>
-                <li class="user">收货人：{{addressInfo.userName}}</li>
-                <li class="tel">手机：{{addressInfo.tel}}</li>
-                <li class="street">收货地址：{{addressInfo.streetName}}</li>
+                <li><strong>订单ID: </strong>{{orderList.orderId}}</li>
+                <li class="shipping"><strong>运费：</strong>{{shipping | currency('￥')}}</li>
+                <li class="discount"><strong>折扣：</strong>{{discount | currency('￥')}}</li>
+                <li class="tax"><strong>税：</strong>{{tax | currency('￥')}}</li>
+                <li class="total"><strong>订单总价：</strong>{{orderList.orderTotal | currency('￥')}}</li>
+                <li class="date"><strong>创建时间：</strong>{{orderList.createDate}}</li>
+                <li class="user"><strong>收货人：</strong>{{addressInfo.userName}}</li>
+                <li class="tel"><strong>手机：</strong>{{addressInfo.tel}}</li>
+                <li class="postCode"><strong>邮编：</strong>{{addressInfo.postCode}}</li>
+                <li class="street"><strong>收货地址：</strong>{{addressInfo.streetName}}</li>
+                <li class="isDefault"><strong>是否为默认地址：</strong>{{addressInfo.isDefault ? '是' : '否'}}</li>
+
             </ul>
           </div>
           <div class="enterOrderList">
@@ -83,6 +89,8 @@
     const NavBread = resolve => require(['@/components/Bread'], resolve)
     
     import axios from 'axios'
+    import { mapState } from 'vuex'
+
     export default {
         data() {
             return {
@@ -99,7 +107,12 @@
         computed: {
           DetailData() {
             return this.$store.state.detail.DetailData
-          }
+          },
+          ...mapState({
+            shipping: state => state.order.shipping,
+            discount:state => state.order.discount,
+            tax: state => state.order.tax,
+          })
         },
         mounted() {
            this.init(this.DetailData)

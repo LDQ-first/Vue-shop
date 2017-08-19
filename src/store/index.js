@@ -3,6 +3,7 @@ import Vue from 'vue'
 Vue.use(Vuex)
 import moduleHeader from './module/moduleHeader.js'
 import moduleDetail from './module/moduleDetail.js'
+import moduleOrder from './module/moduleOrder.js'
 /*import mutations from './mutations'*/
 
 /*export default new Vuex.Store({
@@ -17,6 +18,7 @@ import moduleDetail from './module/moduleDetail.js'
 export default new Vuex.Store({
     modules: {
         header: moduleHeader,
-        detail: moduleDetail
+        detail: moduleDetail,
+        order: moduleOrder
     }
 })

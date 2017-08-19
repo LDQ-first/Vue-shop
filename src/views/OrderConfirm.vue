@@ -134,12 +134,11 @@
   const NavBread = resolve => require(['@/components/Bread'], resolve)
   
   import axios from 'axios'
+  import { mapState } from 'vuex'
+
   export default{
       data(){
           return{
-              shipping:100,
-              discount:200,
-              tax:400,
               subTotal:0,
               orderTotal:0,
               cartList:[]
@@ -147,6 +146,13 @@
       },
       mounted(){
           this.init();
+      },
+      computed: {
+        ...mapState({
+          shipping: state => state.order.shipping,
+          discount:state => state.order.discount,
+          tax: state => state.order.tax,
+        })
       },
       components:{
         NavHeader,
