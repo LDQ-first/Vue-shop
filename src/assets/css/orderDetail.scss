@@ -1,0 +1,51 @@
+.orderDetail {
+    margin: 2em;
+    background: #FFF;
+    padding: 1em;
+    .goods-list {
+        margin-bottom: 2em;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        @media screen and (max-width: 767px) {
+            justify-content: center;
+        }
+        .goods-item {
+            margin: 0.5em;
+            border: 2px solid #41A6BD;
+            padding: 10px;
+            @media screen and (max-width: 580px) {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+            }
+            img {
+                width: 200px;
+                margin: 0 auto;
+                display: inline-block;
+                @media screen and (max-width: 580px) {
+                    width: 120px;
+                }
+            }
+            .item-sp {
+                display: block;
+            }
+        }
+
+    }
+    .order-list {
+        li {
+            margin: 1em;
+        }
+    }
+}
+
+.enterOrderList {
+    margin: 10px;
+    border: 2px solid #41B883;
+    display: inline-block;
+    padding: 5px 10px;
+    background: rgba(65, 166, 189, 0.5);
+    float: right;
+}

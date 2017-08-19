@@ -161,7 +161,11 @@
             }
         },
         computed: {
-          ...mapState(['nickName','cartCount'])
+         /* ...mapState(['nickName','cartCount'])*/
+          ...mapState({
+            nickName: state => state.header.nickName,
+            cartCount: state => state.header.cartCount
+          })
          /* nickName() {
             return this.$store.state.nickName
           },

@@ -673,7 +673,7 @@ router.post("/payMent", (req, res, next) => {
       else {
         res.json({
           status: '400',
-          msg: '没有地址',
+          msg: '订单创建失败',
           result: ''
         })
       }
@@ -787,16 +787,23 @@ router.get("/getCartCount", (req, res, next) => {
 
 //订单列表
 router.get('/orderList', (req, res, next) => {
-    const userId = req.session.user.userId
-
+    const userId = req.session.user.userId,
+          page = req.param("page"),
+          pageSize = req.param("pageSize"),
+          skip = (page - 1) * pageSize
+    
     User.findOne({userId: userId})
         .then(doc => {
-          console.log(doc.orderList)
           if(doc && doc.orderList) {
+            let orderList = doc.orderList
+            orderList  = orderList.slice(skip, skip + parseInt(pageSize))
             res.json({
               status: '200',
               msg: 'OK',
-              result: doc.orderList
+              result: {
+                count: orderList.length,
+                list: orderList
+              }
             })
           }else {
              res.json({
