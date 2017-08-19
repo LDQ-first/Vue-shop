@@ -1,9 +1,9 @@
 <template>
     <div>
-      <NavHeader/>
-      <Bread>
+      <nav-header/>
+      <bread>
         <span>商品</span>
-      </Bread>
+      </bread>
       <div class="accessory-result-page accessory-page">
         <div class="container">
           <div class="filter-nav">
@@ -32,7 +32,7 @@
                 <ul>
                   <li v-for="(item, index) in goodsList" key="index">
                     <div class="pic">
-                      <a href="javascript:;"><img v-lazy="`static/${item.productImage}`" alt=""></a>
+                      <a href="javascript:;"><img v-lazy="`static/${item.productImage}`" alt="" @click="showPirceDetail(item)"></a>
                     </div>
                     <div class="main">
                       <div class="name">{{item.productName}}</div>
@@ -52,15 +52,15 @@
         </div>
       </div>
       <div class="md-overlay" v-show="overLayFlag" @click="closePop"></div>
-      <Modal :mdShow="mdShow" @close="closeModal">
+      <modal :mdShow="mdShow" @close="closeModal">
         <p slot="message">
           请先登录，否则无法加入到购物车中!
         </p>
         <div slot="btnGroup" class="btnGroup">
           <a class="btn btn--m" @click="mdShow=false">关闭</a>
         </div>
-      </Modal>
-      <Modal :mdShow="mdShowCart" @close="closeModal">
+      </modal>
+      <modal :mdShow="mdShowCart" @close="closeModal">
         <p slot="message">
           <svg class="icon-status-ok">
             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-status-ok"></use>
@@ -71,10 +71,31 @@
           <a class="btn btn--m" @click="mdShowCart=false">继续购物</a>
            <router-link class="btn btn--m" to="/cart">查看购物车</router-link>
         </div>
-      </Modal>
-     <NavFooter class="noPadding"/>
+      </modal>
+      <modal :mdShow="goodsPrice" @close="closeModal" id="goodsPrice">
+        <div slot="title" class="md-title">价格走势</div>
+        <div slot="message">
+          <div class="goodsPriceEcharts" ref="goodsPriceEcharts"></div>
+        </div>
+        <div slot="btnGroup" class="btnGroup">
+          
+        </div>
+      </modal>
+     <nav-footer class="noPadding"/>
     </div>
 </template>
+
+<style lang="scss">
+  #goodsPrice {
+    .md-modal {
+      width: 80% !important;
+      @media screen and (max-width: 580px) {
+        width: 100% !important;
+      }
+    }
+  }
+</style>
+
 <script>
     import '@/assets/css/base.scss'
     import '@/assets/css/product.scss'
@@ -86,6 +107,10 @@
     const Modal = resolve => require(['@/components/Modal'], resolve)
 
     import axios from 'axios'
+    import echarts from 'echarts/lib/echarts'
+    import macarons from 'echarts/theme/macarons'
+
+
     export default{
         data(){
             return {
@@ -117,8 +142,9 @@
                 busy: true,
                 loading: false,
                 mdShow: false,
-                mdShowCart: false
-
+                mdShowCart: false,
+                goodsPrice: false,
+                myCharts: ''
             }
         },
         components:{
@@ -201,6 +227,162 @@
             closeModal() {
               this.mdShow = false,
               this.mdShowCart = false
+              this.goodsPrice = false
+            },
+            showPirceDetail(item) {
+              const productId = item.productId,
+                    productName = item.productName
+              this.findPirceDetail(productId)
+                  .then(priceDetail => {
+                    this.echartsInit(priceDetail, productName)
+                    window.addEventListener('resize',() => {
+                      this.echartsInit(priceDetail, productName)  
+                    })
+                    this.goodsPrice = true
+                  })
+            },
+            findPirceDetail(productId) {
+              return axios.get('/goods/priceDetail',{
+                params: {
+                  productId: productId
+                }
+              }).then(res => res.data)
+                .then(data => {
+                  if(data.status === '200') {
+                    return data.result.priceDetail
+                  } else {
+                    return []
+                  }
+                })
+            },
+             echartsInit(priceDetail, productName) {
+
+             if(this.myCharts != '') {
+               echarts.dispose(this.myCharts)
+             }
+
+             this.myCharts = echarts.init(this.$refs.goodsPriceEcharts, 'macarons')
+ 
+              let lineData = priceDetail,
+                  linelegendData = [],
+                  lineXData = [],
+                  month = new Date().getMonth() + 1
+             
+             for(let i = 0; i < 4; i++) {
+               lineXData[3 - i] = month - i + '月'
+             }
+              linelegendData.push(productName)
+
+              const option = {
+
+                baseOption: {
+                  backgroundColor: 'rgba(54, 190, 217, 0.3)',
+                  title: {
+                    text: '近四个月的价格趋势(单位：￥)',
+                    x: 'center'
+                  },
+                  tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        lineStyle: {
+                            color: '#57617B'
+                        }
+                    }
+                  },
+                  legend: {
+                    orient: 'vertical',
+                    left: 30,
+                    top: 40,
+                    data: linelegendData
+                  },
+                  toolbox: {
+                    show: true,
+                    orient: 'vertical',
+                    top: 40,
+                    right: 30,
+                    feature: {
+                        saveAsImage: {
+                          show: true
+                        },
+                        dataZoom: {
+                          show: true
+                        },
+                        magicType: {
+                          show: true,
+                          type: ['line', 'bar']
+                        }
+                    }
+                  },
+                  xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    axisLine: {
+                        lineStyle: {
+                            color: '#57617B'
+                        }
+                    },
+                    data: lineXData
+                  },
+                  yAxis: {
+                    type: 'value',
+                    axisTick: {
+                        show: false
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: '#57617B'
+                        }
+                    },
+                    axisLabel: {
+                        margin: 10,
+                        textStyle: {
+                            fontSize: 14
+                        }
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: '#57617B'
+                        }
+                    }
+                  },
+                  grid: {
+                      left: 'center',
+                      top: 100,
+                  },
+                  series: [ {
+                      name: productName,
+                      type: 'line',
+                      smooth: true,
+                      lineStyle: {
+                      normal: {
+                            width: 2
+                        }
+                      },
+                      areaStyle: {
+                          normal: {
+                              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                  offset: 0,
+                                  color: 'rgba(107, 61, 207, 0.4)'
+                              }, {
+                                  offset: 0.8,
+                                  color: 'rgba(169, 143, 227, 0.1)'
+                              }], false),
+                              shadowColor: 'rgba(0, 0, 0, 0.1)',
+                              shadowBlur: 10
+                          }
+                      },
+                      data: lineData
+                    }
+                  ],
+                  itemStyle: {
+                    normal: {
+                      
+                    }
+                  }
+                }
+              }
+
+              this.myCharts.setOption(option)
             }
         }
     }

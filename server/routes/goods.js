@@ -147,4 +147,33 @@ router.post("/addCart", (req, res, next) => {
          })
 })
 
+
+
+router.get('/priceDetail', (req, res, next) => {
+    const productId = req.param('productId')
+    Goods.findOne({productId: productId})
+         .then(doc => {
+             if(doc) {
+                  res.json({
+                    status: "200",
+                    msg: 'OK',
+                    result: doc
+                })
+             }
+             else {
+                 res.json({
+                    status: "500",
+                    msg: '查找失败'
+                })
+             }
+         })
+         .catch(err => {
+              res.json({
+                status: "404",
+                msg: err.message
+            })
+         })
+})
+
+
 module.exports = router

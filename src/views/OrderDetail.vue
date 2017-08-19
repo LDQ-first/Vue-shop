@@ -1,5 +1,5 @@
 <template>
-  <div class="orderDetail-wrapper">
+  <div class="orderDetail-wrapper" >
     <nav-header></nav-header>
     <nav-bread>
       <span class="item-sp">订单详情</span>
@@ -49,6 +49,7 @@
             </div>
         </div>
           <div class="orderDetail">
+            <div class="priceEcharts" ref="priceEcharts"></div>
             <ul class="goods-list">
               <li v-for="(good, index) in goodsList" key="index" class="goods-item">
                   <img :src="`static/${good.productImage}`" alt="">
@@ -90,13 +91,16 @@
     
     import axios from 'axios'
     import { mapState } from 'vuex'
+    import echarts from 'echarts/lib/echarts'
+    import macarons from 'echarts/theme/macarons'
 
     export default {
         data() {
             return {
                addressInfo: [],
                goodsList: [],
-               orderList: {}
+               orderList: {},
+               myCharts: ''
             }
         },
          components:{
@@ -117,26 +121,193 @@
         mounted() {
            this.init(this.DetailData)
         },
+        updated() {
+          this.echartsInit(this.goodsList, this.orderList.orderTotal)
+        },
          methods:{
            init(DetailData) {
              if(!DetailData && !localStorage.DetailData) {
                this.$router.push('/orderList')
+               return
              } else if(DetailData){
               localStorage.DetailData = JSON.stringify(DetailData)
               this.addressInfo = DetailData.addressInfo
               this.goodsList = DetailData.goodsList,
               this.orderList = DetailData
+              this.echartsInit(this.goodsList, this.orderList.orderTotal)
              } else {
                const data = JSON.parse(localStorage.DetailData)
                this.addressInfo = data.addressInfo
                this.goodsList = data.goodsList
                this.orderList = data
+               this.echartsInit(this.goodsList, this.orderList.orderTotal)
              }  
+
+             window.addEventListener('resize',() => {
+               this.echartsInit(this.goodsList, this.orderList.orderTotal)  
+             })
            },
             entryOrderList() {
               this.$router.push({
                 path: '/orderList'
               })
+            },
+            echartsInit(goodsList, orderTotal) {
+
+             if(this.myCharts != '') {
+               echarts.dispose(this.myCharts)
+             }
+
+             this.myCharts = echarts.init(this.$refs.priceEcharts, 'macarons')
+ 
+              const areaData = [],
+                    pielegendData = [],
+                    barData = [],
+                    barXData = []
+
+              for(let item of goodsList) {
+                const obj = {},
+                      singleTotal = item.salePrice * item.productNum
+                obj.name = item.productName + ' ' + singleTotal + '￥'
+                obj.value = singleTotal
+                areaData.push(obj)
+                pielegendData.push(obj.name)
+                barData.push(singleTotal)
+                barXData.push(item.productName)
+              }
+
+              const option = {
+
+                baseOption: {
+                  backgroundColor: 'rgba(54, 190, 217, 0.3)',
+                  title: {
+                    text: '价格组成',
+                    subtext: `共计${orderTotal}￥`,
+                    subtextStyle: {
+                      color: '#F15B47',
+                      fontWeight: 'bold',
+                      fontSize: 18
+                    },
+                    x: 'center'
+                  },
+                  tooltip: {
+                    trigger: 'item',
+                    formatter: '{a}<br/>{b} : {c} ({d}%)'
+                  },
+                  legend: {
+                    orient: 'vertical',
+                    left: 30,
+                    top: 60,
+                    data: pielegendData
+                  },
+                  toolbox: {
+                    show: true,
+                    orient: 'vertical',
+                    top: 60,
+                    right: 30,
+                    feature: {
+                        saveAsImage: {
+                          show: true
+                        }
+                    }
+                  },
+                  series: [ {
+                      name: '价格组成',
+                      type: 'pie',
+                      radius: ['10%', '50%'],
+                      center: ['50%', '65%'],
+                      roseType: 'area',
+                      data: areaData
+                    }
+                  ],
+                  itemStyle: {
+                    normal: {
+                      shadowBlur: 300,
+                      shadowOffsetX: 0,
+                      shadowOffsetY: 0,
+                      shadowColor: 'rgba(74, 187, 240, 1)'
+                    }
+                  }
+                },
+
+                media: [{
+                  query: {
+                    maxWidth: 700
+                  },
+                  option: {
+                    series: [{
+                      radius: '40%',
+                      roseType: false
+                    }]
+                  }
+                }, {
+                  query: {
+                    maxWidth: 500
+                  },
+                  option: {
+                    legend: {
+                      orient: 'vertical',
+                      left: 'left',
+                      top: 60,
+                      data: ['价格组成']
+                    },
+                    tooltip: {
+                      trigger: 'item',
+                      formatter: '{a}<br/>{b} : {c}￥',
+                      axisPointer: {
+                        type: 'shadow',
+                        label: {
+                          backgroundColor: '#B97AFF'
+                        }
+                      }
+                    },
+                     grid: {
+                        left: 'center',
+                        top: 120,
+                        width: '70%',
+                        height: '70%'
+                    },
+                    xAxis: {
+                      data: barXData
+                    },
+                    yAxis: {},
+                    series: [{
+                      type: 'bar',
+                      data: barData,
+                      barWidth: 20,
+                    }],
+                    itemStyle: {
+                      normal: {
+                        barBorderRadius: [10,10,0,0]
+                      }
+                    }
+                  }
+                }, {
+                  query: {
+                    maxWidth: 360
+                  },
+                  option: {
+                    tooltip: {
+                      position: 'top'
+                    },
+                     grid: {
+                        left: 'center',
+                        top: 100,
+                        width: '55%'
+                    },
+                    xAxis: {
+                      axisLabel: {
+                        show: false
+                      },
+                      axisTick: {
+                        show: false
+                      }
+                    }
+                  } 
+                }] 
+              }
+
+              this.myCharts.setOption(option)
             }
         }
     }

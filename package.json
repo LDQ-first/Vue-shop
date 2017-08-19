@@ -22,7 +22,8 @@
     "vuex": "cnpm install --save vuex",
     "session": "cnpm install --save express-session connect-mongo",
     "sass": "cnpm install --save sass-loader node-sass",
-    "captcha": "cnpm install --save svg-captcha"
+    "captcha": "cnpm install --save svg-captcha",
+    "echarts": "cnpm install echarts --save"
   },
   "dependencies": {
     "axios": "^0.16.2",
@@ -30,6 +31,7 @@
     "connect-mongo": "^1.3.2",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
+    "echarts": "^3.6.2",
     "ejs": "^2.5.7",
     "express": "~4.15.2",
     "express-session": "^1.15.5",
