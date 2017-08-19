@@ -28,7 +28,7 @@
           <div class="navbar-right-container" style="display: flex;">
             <div class="navbar-menu-container">
               <!--<a href="/" class="navbar-link">我的账户</a>-->
-              <span class="navbar-link" v-text="nickName" v-if="nickName"></span>
+              <span class="navbar-link" v-text="nickName" v-if="nickName" @click="enterOrder"></span>
               <a href="javascript:void(0)" class="navbar-link" @click="showLoginModal" v-show="!nickName">登录</a>
               <a href="javascript:void(0)" class="navbar-link" @click="showSignupModal" v-show="!nickName">注册</a>
               <a href="javascript:void(0)" class="navbar-link" v-show="nickName" @click="Logout">登出</a>
@@ -355,6 +355,16 @@
             else {
               this.$router.push({
                 path: "/cart"
+              })
+            }
+          },
+          enterOrder() {
+             if(!this.isLogin) {
+              this.mdShow = true
+            }
+            else {
+              this.$router.push({
+                path: "/orderList"
               })
             }
           },

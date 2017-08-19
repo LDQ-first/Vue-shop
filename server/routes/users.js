@@ -784,4 +784,70 @@ router.get("/getCartCount", (req, res, next) => {
   }
 })
 
+
+//订单列表
+router.get('/orderList', (req, res, next) => {
+    const userId = req.session.user.userId
+
+    User.findOne({userId: userId})
+        .then(doc => {
+          console.log(doc.orderList)
+          if(doc && doc.orderList) {
+            res.json({
+              status: '200',
+              msg: 'OK',
+              result: doc.orderList
+            })
+          }else {
+             res.json({
+              status: '500',
+              msg: '找不到订单列表',
+              result: ''
+            })
+          }
+        })
+        .catch(err => {
+           res.json({
+            status: '404',
+            msg: err.message,
+            result: ''
+          })
+        })
+})
+
+
+
+//删除订单
+router.post('/delOrder', (req, res, next) => {
+  const userId = req.session.user.userId,
+        orderId = req.body.orderId
+
+  User.update({userId: userId}, { $pull: { 'orderList' : { 'orderId': orderId } } })
+      .then(doc => {
+        /*console.log(doc)*/
+        if(doc) {
+            res.json({
+              status: '200',
+              msg: 'OK',
+              result: doc
+            })
+          }else {
+             res.json({
+              status: '500',
+              msg: '删除订单失败',
+              result: ''
+            })
+          }
+      })
+      .catch(err => {
+          res.json({
+          status: '404',
+          msg: err.message,
+          result: ''
+        })
+      })
+})
+
+
+
 module.exports = router;
