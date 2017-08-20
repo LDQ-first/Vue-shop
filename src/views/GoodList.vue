@@ -28,7 +28,8 @@
 
             <!-- search result accessories list -->
             <div class="accessory-list-wrap">
-              <div class="accessory-list col-4">
+              <pull-refresh :next="pullRefresh">
+              <div slot="list" class="accessory-list col-4">
                 <ul>
                   <li v-for="(item, index) in goodsList" key="index">
                     <div class="pic">
@@ -43,10 +44,11 @@
                     </div>
                   </li>
                 </ul>
-                <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="30" class="load-more">
+              </div>
+               </pull-refresh>
+               <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="30" class="load-more">
                   <img src="../assets/loading-spinning-bubbles.svg" alt="" v-show="loading">
                 </div>
-              </div>
             </div>
           </div>
         </div>
@@ -110,6 +112,7 @@
     import echarts from 'echarts/lib/echarts'
     import macarons from 'echarts/theme/macarons'
 
+    const pullRefresh = resolve => require(['@/components/pullRefreshs'], resolve)
 
     export default{
         data(){
@@ -138,8 +141,9 @@
                 overLayFlag: false,
                 sortFlag: true,
                 page: 1,
+                refreshPage: 2,
                 pageSize: 8,
-                busy: true,
+                busy: false,
                 loading: false,
                 mdShow: false,
                 mdShowCart: false,
@@ -151,7 +155,8 @@
             NavHeader,
             NavFooter,
             Bread,
-            Modal
+            Modal,
+            pullRefresh
         },
         mounted: function () {
             this.getGoodsList()
@@ -165,28 +170,58 @@
                   priceChecked: this.priceChecked
                 }
                 this.loading = true;
-                axios.get("/goods/list", {
+                if(!this.busy) {
+                  axios.get("/goods/list", {
+                      params: param
+                  }).then( res => res.data).then(data => {
+                      if(data.result.count === 0) {
+                        this.page = 1
+                        this.busy = true
+                      }
+                      else {
+                        if(flag) {
+                          this.goodsList = this.goodsList.concat(data.result.list)
+                        }
+                        else {
+                          this.goodsList = data.result.list
+                        }
+                        this.busy = false
+                      }
+                    this.loading = false
+                  })
+                }
+                else {
+                  return 
+                }
+            },
+            pullRefresh() {
+               const param = {
+                  page: this.refreshPage, 
+                  pageSize: this.pageSize,
+                  sort: this.sortFlag ? 1 : -1,
+                  priceChecked: this.priceChecked
+                }
+               return axios.get("/goods/list", {
                     params: param
-                }).then( res => res.data).then(data => {
-                  if(flag) {
-                     this.goodsList = this.goodsList.concat(data.result.list)
-                     if(data.result.count === 0) {
-                       this.busy = true
-                     }
-                     else {
-                       this.busy = false
-                     }
+                })
+                .then( res => res.data)
+                .then(data => {              
+                  if(data.result.count === 0) {
+                    this.refreshPage = 1
+                    this. pullRefresh() 
                   }
                   else {
                     this.goodsList = data.result.list
-                    this.busy = false
+                    this.page = this.refreshPage
+                    this.refreshPage++
                   }
-                  this.loading = false
+                  this.busy = false
                 })
             },
             sortGoods() {
               this.sortFlag = !this.sortFlag
               this.page = 1
+              this.busy = false
               this.getGoodsList()
             },
             showFilterPop() {
@@ -201,14 +236,14 @@
                 this.priceChecked = state
                 this.closePop()
                 this.page = 1
+                this.busy = false
                 this.getGoodsList()
             },
             loadMore() { 
-              //禁止滚动加载
-              this.busy = true
               setTimeout(() => {
                 this.page++
                 this.getGoodsList(true)
+                this.busy = true
               }, 500);
             },
             addCart(productId) {
