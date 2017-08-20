@@ -233,6 +233,7 @@
                             if(data.result[i].isDefault) {
                               this.hasDefault = true
                               data.result.splice(0, 0 , data.result.splice(i,1)[0])
+                              this.selectedAddrId = data.result[i].addressId
                               break;
                             }
                             else {
@@ -240,7 +241,6 @@
                             }
                           }
                           this.addressList = data.result
-                          this.selectedAddrId = this.addressList[0].addressId
                         }
                         else {
                           this.addressList = data.result
