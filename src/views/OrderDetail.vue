@@ -215,7 +215,7 @@
                       name: '价格组成',
                       type: 'pie',
                       radius: ['10%', '50%'],
-                      center: ['50%', '65%'],
+                      center: ['50%', '55%'],
                       roseType: 'area',
                       data: areaData
                     }

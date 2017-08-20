@@ -410,6 +410,7 @@ a {
     text-transform: uppercase;
     letter-spacing: .25em;
     font-weight: bold;
+    text-align: center;
   }
 }
 
@@ -1104,4 +1105,17 @@ html {
       font-size: 12px;
     }
   }
+}
+
+
+.clearAll {
+  margin: 10px 0;
+  padding: 1em;
+  .clearBtn {
+    background: #EE7C43;
+    color: #EEE;
+    padding: .5em 1em;
+    box-shadow: 0 0 4px rgba(145, 138, 225, 0.7),
+                0 0 8px rgba(145, 138, 225, 0.4)
+  } 
 }

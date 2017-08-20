@@ -70,7 +70,7 @@
             <div class="addr-list-wrap">
               <div class="addr-list">
                 <ul>
-                  <li v-for="(item,index) in addressListFilter" :class="{'check':checkIndex==index}" @click="checkIndex=index;selectedAddrId=item.addressId" key="index">
+                  <li v-for="(item,index) in addressListFilter" :class="{'check':checkIndex==index}" @click="checkIndex=index;" key="index">
                     <dl>
                       <dt>{{item.userName}}</dt>
                       <dd class="address">{{item.streetName}}</dd>
@@ -229,11 +229,11 @@
                     .then(res => res.data)
                     .then(data =>{
                       if(data.status === '200') {
-                          for(let i in data.result) {
-                            if(data.result[i].isDefault) {
+                          for(let i in data.result) {          
+                            if(data.result[i].isDefault) {    
                               this.hasDefault = true
-                              data.result.splice(0, 0 , data.result.splice(i,1)[0])
                               this.selectedAddrId = data.result[i].addressId
+                              data.result.splice(0, 0 , data.result.splice(i,1)[0])
                               break;
                             }
                             else {
@@ -267,7 +267,7 @@
                 })
                 .then(res => res.data)
                 .then(data =>{
-                    if(data.status === '200'){
+                    if(data.status === '200') {
                         this.init()
                     }
                 })

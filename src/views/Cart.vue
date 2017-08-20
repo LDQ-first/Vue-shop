@@ -128,12 +128,22 @@
           </div>
         </div>
       </div>
+      <div class="clearAll">
+        <a href="javascript:;" @click="clearAllModal = true" class="clearBtn">清空购物车</a>
+      </div>
     </div>
     <Modal :mdShow="modalConfirm" @close="closeModal">
       <p slot="message">你确认要删除此条数据吗?</p>
       <div slot="btnGroup" class="btnGroup">
         <a class="btn btn--m" href="javascript:;" @click="delCart">确认</a>
         <a class="btn btn--m btn--red" href="javascript:;" @click="modalConfirm = false">关闭</a>
+      </div>
+    </Modal>
+    <Modal :mdShow="clearAllModal" @close="closeModal">
+      <p slot="message">你确认要清空购物车吗?</p>
+      <div slot="btnGroup" class="btnGroup">
+        <a class="btn btn--m" href="javascript:;" @click="clearAll">确认</a>
+        <a class="btn btn--m btn--red" href="javascript:;" @click="clearAllModal = false">关闭</a>
       </div>
     </Modal>
     <nav-footer></nav-footer>
@@ -177,7 +187,8 @@
             return {
                 cartList: [],
                 productId: '',
-                modalConfirm: false
+                modalConfirm: false,
+                clearAllModal: false,
             }
         },
          components:{
@@ -222,8 +233,23 @@
                          }
                      })
              },
+             clearAll() {
+               if(this.cartList.length === 0) {
+                 this.clearAllModal = false
+                 return
+               }
+               axios.post('/users/clearAll')
+                    .then(res => res.data)
+                     .then(data => {
+                         if(data.status === '200') {
+                            this.clearAllModal = false
+                            this.init()
+                         }
+                     })
+             },
              closeModal() {
-                 this.modalConfirm = false
+                 this.modalConfirm = false,
+                 this.clearAllModal = false
              },
              delCartConfirm(item) {
                  this.delItem = item

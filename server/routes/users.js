@@ -340,6 +340,49 @@ router.post("/cartDel", (req, res, next) => {
 })
 
 
+//清空购物车
+router.post('/clearAll', (req, res, next) => {
+  const userId = req.session.user.userId
+
+  
+  User.findOne({ userId: userId })
+    .then(doc => {
+      if (doc && doc.cartList) {
+        doc.cartList = []
+        doc.save()
+           .then(cartDoc => {
+              res.json({
+                status: '200',
+                msg: 'OK',
+                result: 'success'
+              })
+           })
+           .catch(err => {
+              res.json({
+                status: '404',
+                msg: err.message,
+                result: ''
+              })
+            })
+        
+      } else {
+        res.json({
+          status: '500',
+          msg: '删除失败',
+          result: ''
+        })
+      }
+    })
+    .catch(err => {
+      res.json({
+        status: '404',
+        msg: err.message,
+        result: ''
+      })
+    })
+})
+
+
 //编辑购物车
 router.post("/cartEdit", (req, res, next) => {
   //const userId = req.cookies.userId,
@@ -621,7 +664,7 @@ router.post("/payMent", (req, res, next) => {
       if (doc && doc.addressList.length) {
         let address = {}, goodsList = []
         doc.addressList.forEach(item => {
-          if (item.addressId = addressId) {
+          if (item.addressId === addressId) {
             address = item;
           }
         })

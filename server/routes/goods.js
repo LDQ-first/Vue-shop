@@ -83,22 +83,22 @@ router.post("/addCart", (req, res, next) => {
                         item.productNum++ 
                     }
                 })
-                if(goodsItem) {
-                    doc.save((CartErr, CartDoc) => {
-                        if(CartErr) {
-                            res.json({
-                                status: '404',
-                                msg: CartErr.message
-                            })
-                        }
-                        else {
+                if(goodsItem) {            
+                    doc.save()
+                        .then(doc=> {
                             res.json({
                                 status: '200',
                                 msg: 'OK',
                                 result: 'success'
                             })
-                        }
-                    })
+                        })
+                       .catch(err => {
+                            res.json({
+                                status: "404",
+                                msg: err.message
+                            })
+                       })
+                     
                 }
                 else {
                     Goods.findOne({productId:productId})
@@ -107,21 +107,22 @@ router.post("/addCart", (req, res, next) => {
                                 goodsDoc.productNum = 1
                                 goodsDoc.checked = 1
                                 doc.cartList.push(goodsDoc)
-                                doc.save((CartErr, CartDoc) => {
-                                    if(CartErr) {
-                                        res.json({
-                                            status: '404',
-                                            msg: CartErr.message
-                                        })
-                                    }
-                                    else {
+                                
+                                doc.save()
+                                    .then(doc=> {
                                         res.json({
                                             status: '200',
                                             msg: 'OK',
                                             result: 'success'
                                         })
-                                    }
-                                })
+                                    })
+                                    .catch(err => {
+                                        res.json({
+                                            status: "404",
+                                            msg: err.message
+                                        })
+                                   })
+                                
                             }
                          })
                          .catch(err => {
