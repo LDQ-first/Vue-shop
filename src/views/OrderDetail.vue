@@ -196,7 +196,7 @@
                   },
                   legend: {
                     orient: 'vertical',
-                    left: 30,
+                    left: 10,
                     top: 60,
                     data: pielegendData
                   },
@@ -232,7 +232,7 @@
 
                 media: [{
                   query: {
-                    maxWidth: 700
+                    maxWidth: 900
                   },
                   option: {
                     series: [{
@@ -242,7 +242,7 @@
                   }
                 }, {
                   query: {
-                    maxWidth: 500
+                    maxWidth: 780
                   },
                   option: {
                     legend: {
@@ -267,10 +267,10 @@
                         width: '70%',
                         height: '70%'
                     },
-                    xAxis: {
-                      data: barXData
+                    xAxis: { },
+                    yAxis: {
+                       data: barXData
                     },
-                    yAxis: {},
                     series: [{
                       type: 'bar',
                       data: barData,
@@ -278,30 +278,65 @@
                     }],
                     itemStyle: {
                       normal: {
-                        barBorderRadius: [10,10,0,0]
+                        barBorderRadius: [0,10,10,0]
                       }
                     }
                   }
                 }, {
                   query: {
-                    maxWidth: 360
+                    maxWidth: 620
                   },
                   option: {
-                    tooltip: {
-                      position: 'top'
-                    },
                      grid: {
-                        left: 'center',
-                        top: 100,
-                        width: '55%'
+                        width: '60%'
+                    }
+                  } 
+                },{
+                  query: {
+                    maxWidth: 460
+                  },
+                  option: {
+                     grid: {
+                        width: '50%'
                     },
                     xAxis: {
-                      axisLabel: {
-                        show: false
-                      },
-                      axisTick: {
-                        show: false
-                      }
+                      splitNumber: 3
+                    }
+                  } 
+                },{
+                  query: {
+                    maxWidth: 370
+                  },
+                  option: {
+                     grid: {
+                        width: '42%'
+                    },
+                    xAxis: {
+                      splitNumber: 3
+                    }
+                  } 
+                },{
+                  query: {
+                    maxWidth: 330
+                  },
+                  option: {
+                     grid: {
+                        width: '36%'
+                    },
+                    xAxis: {
+                      splitNumber: 2
+                    }
+                  } 
+                },{
+                  query: {
+                    maxWidth: 290
+                  },
+                  option: {
+                     grid: {
+                        width: '30%'
+                    },
+                    xAxis: {
+                      splitNumber: 1
                     }
                   } 
                 }] 
