@@ -56,8 +56,7 @@ export default {
 
 <style>
    .cov-button-ripple {
-        position: relative;
-        display: inline-block;    
+        position: relative;   
         overflow: hidden;
         cursor: pointer;
     }

@@ -33,7 +33,7 @@
               <div slot="list" class="accessory-list col-4">
                 <ul>
                   <li v-for="(item, index) in goodsList" key="index">
-                    <ripple>
+                    <ripple speed="1">
                     <div class="pic">
                       <a href="javascript:;"><img v-lazy="`static/${item.productImage}`" alt="" @click="showPirceDetail(item)"></a>
                     </div>
