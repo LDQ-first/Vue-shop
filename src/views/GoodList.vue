@@ -169,8 +169,8 @@
                   sort: this.sortFlag ? 1 : -1,
                   priceChecked: this.priceChecked
                 }
-                this.loading = true;
                 if(!this.busy) {
+                  this.loading = true;
                   axios.get("/goods/list", {
                       params: param
                   }).then( res => res.data).then(data => {

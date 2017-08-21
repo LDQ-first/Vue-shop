@@ -100,6 +100,8 @@ html {
     overflow: hidden;
     cursor: pointer;
     color: #333;
+    box-shadow: 0 0 4px rgba(145, 138, 225, 0.7),
+                0 0 8px rgba(145, 138, 225, 0.4);
     dt {
       line-height: 1em;
       padding: 0 25px 10px 0;
@@ -192,6 +194,8 @@ html {
 
 .shipping-addr-more {
   text-align: center;
+  margin: 1em 0;
+  font-size: 1.5em;
 }
 
 @media only screen and (max-width: 991px) {
@@ -227,6 +231,8 @@ html {
 .cart-item {
   display: table;
   width: 100%;
+  box-shadow: 0 0 4px rgba(145, 138, 225, 0.7),
+              0 0 8px rgba(145, 138, 225, 0.4);
 }
 
 .cart-item-head {
@@ -240,7 +246,7 @@ html {
     display: table-cell;
     height: 40px;
     line-height: 40px;
-    background: #605F5F;
+    background: #6FC0EC;
     color: #fff;
     text-align: center;
     text-transform: uppercase;
@@ -468,6 +474,7 @@ html {
 @media only screen and (max-width: 991px) {
   .cart-item {
     display: block;
+    box-shadow: none;
   }
   .cart-item-head {
     display: none;
@@ -481,6 +488,8 @@ html {
       padding: 0;
       border-top: 1px solid #e9e9e9;
       border-bottom: 1px solid #e9e9e9;
+      box-shadow: 0 0 4px rgba(145, 138, 225, 0.7),
+                  0 0 8px rgba(145, 138, 225, 0.4);
       > div {
         position: static;
         display: block;
@@ -590,6 +599,8 @@ html {
   line-height: 1.625;
   cursor: pointer;
   color: #333;
+  box-shadow: 0 0 4px rgba(145, 138, 225, 0.7),
+              0 0 8px rgba(145, 138, 225, 0.4);
 }
 
 .shipping-method li:nth-child(4n), .shipping-method-whiteglove li:nth-child(4n) {
@@ -899,6 +910,10 @@ html {
       float: left;
       width: 50%;
       padding: 0 10px;
+      a {
+        box-shadow: 0 0 4px rgba(145, 138, 225, 0.7),
+                  0 0 8px rgba(145, 138, 225, 0.4);
+      }
     }
     .btn {
       width: 100%;
@@ -1039,6 +1054,10 @@ html {
   .next-btn-wrap {
     margin-top: 20px;
     text-align: right;
+    a {
+      box-shadow: 0 0 4px rgba(145, 138, 225, 0.7),
+              0 0 8px rgba(145, 138, 225, 0.4);
+    }
   }
 }
 
@@ -1051,6 +1070,8 @@ html {
   background: #fff;
   border: 1px solid #e9e9e9;
   font-size: 16px;
+  box-shadow: 0 0 4px rgba(145, 138, 225, 0.7),
+              0 0 8px rgba(145, 138, 225, 0.4);
   &.fixed {
     position: fixed;
     width: 100%;
@@ -1156,9 +1177,13 @@ html {
 .order-foot-wrap {
   .prev-btn-wrap {
     float: left;
+    box-shadow: 0 0 4px rgba(145, 138, 225, 0.7),
+              0 0 8px rgba(145, 138, 225, 0.4);
   }
   .next-btn-wrap {
     float: right;
+    box-shadow: 0 0 4px rgba(145, 138, 225, 0.7),
+              0 0 8px rgba(145, 138, 225, 0.4);
   }
   &:after {
     visibility: hidden;

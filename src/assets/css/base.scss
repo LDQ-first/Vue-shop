@@ -520,6 +520,8 @@ a {
 }
 
 .btn--red {
+  box-shadow: 0 0 4px rgba(145, 138, 225, 0.7),
+              0 0 8px rgba(145, 138, 225, 0.4);
   &.btn--dis, &[href].btn--dis {
     border-color: #ccc;
     background-color: #ccc;
@@ -686,6 +688,11 @@ a {
 
 .select-self-open {
   border-radius: 3px 3px 0 0;
+  &:hover {
+    box-shadow: 0 0 4px rgba(145, 138, 225, 0.7),
+              0 0 8px rgba(145, 138, 225, 0.4);
+  }
+  
   .select-options {
     display: block;
   }
@@ -802,10 +809,13 @@ html {
 }
 
 .footer {
-  background-color: #f5f7fc;
-  color: #333;
+  background-color: #0070b0;
+  color: #EEE;
   width: 100%;
   height: 100px;
+  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.2),
+              0 -1px 1px rgba(0, 0, 0, 0.14),
+              0 -2px 1px -1px rgba(0, 0, 0, 0.12);
 }
 
 .footer__wrap {
@@ -846,7 +856,7 @@ html {
   transform: translateY(-50%);
   right: 36px;
   a, span {
-    color: #ada9a5;
+    color: #EEE;
     margin-left: 3.3125em;
   }
   a:first-child, span:first-child {
@@ -895,7 +905,7 @@ html {
     text-align: center;
   }
   .footer__secondary .footer__inner {
-    padding: 15px 0 20px;
+    /*padding: 15px 0 20px;*/
     height: auto;
     text-align: center;
   }

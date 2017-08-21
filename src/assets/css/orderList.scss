@@ -10,6 +10,8 @@
             float: left;
             background: #FFF;
             transition: all 0.3s ease-in-out;
+            box-shadow: 0 0 4px rgba(145, 138, 225, 0.7),
+                        0 0 8px rgba(145, 138, 225, 0.4);
             @media screen and (max-width: 767px) {
                 width: 100%
             }
@@ -17,6 +19,7 @@
                 border-color: #6FC0EC
             }
             .order-list {
+
                 li {
                     margin: 1em 0;
                 }
@@ -39,6 +42,8 @@
                 display: inline-block;
                 padding: 5px 10px;
                 background: rgba(65, 166, 189, 0.5);
+                box-shadow: 0 0 4px rgba(145, 138, 225, 0.7),
+                            0 0 8px rgba(145, 138, 225, 0.4);
             }
         }
     }
