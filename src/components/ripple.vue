@@ -1,7 +1,12 @@
 <template>
-    <div @click.prevent="reppleClick" class="cov-button-ripple" ref="covButtonRipple">
-        <slot></slot>
-        <span class="cov-ripple" ref="covRipple" :class="{animate: animate}"></span>
+    <div class="ripple">
+        <div class="slot" :class="{one: children === 'one', two: children === 'two'}">
+            <slot></slot>
+        </div>
+        <div @click="reppleClick" class="cov-button-ripple" :class="{br:br}"
+        ref="covButtonRipple">   
+            <span class="cov-ripple" ref="covRipple" :class="{animate: animate}"></span>
+        </div>
     </div>
 </template>
 
@@ -13,6 +18,14 @@ export default {
             required: false
         },
         bg: {
+            type: String,
+            required: false
+        },
+        br: {
+            type: Boolean,
+            required: false   
+        },
+        children: {
             type: String,
             required: false
         }
@@ -27,6 +40,7 @@ export default {
             if(this.animate) {
                 return
             }
+            console.log(this.children)
             this.animate = true
             const button = this.$refs.covButtonRipple
             const ripple = this.$refs.covRipple
@@ -55,10 +69,31 @@ export default {
 </script>
 
 <style>
+   .ripple {
+       position: relative;
+   }
+   .slot {
+      position: relative;
+   }
+   .slot.one * {
+        position: relative;
+        z-index: 1;
+    }
+   .slot.two *>* {
+        position: relative;
+        z-index: 1;
+    }
    .cov-button-ripple {
-        position: relative;   
+        position: absolute;   
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
         overflow: hidden;
         cursor: pointer;
+    }
+    .cov-button-ripple.br {
+        border-radius: 50%;
     }
     .cov-ripple {
         display: block; 

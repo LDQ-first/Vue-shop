@@ -34,12 +34,14 @@
             padding: 10px;
             @media screen and (max-width: 580px) {
                 width: 100%;
+            }
+            .slot {
                 display: flex;
                 flex-direction: column;
+                align-items: center;
             }
             img {
                 width: 200px;
-                margin: 0 auto;
                 display: inline-block;
                 @media screen and (max-width: 580px) {
                     width: 120px;

@@ -28,18 +28,28 @@
           <div class="navbar-right-container" style="display: flex;">
             <div class="navbar-menu-container">
               <!--<a href="/" class="navbar-link">我的账户</a>-->
-              <span class="navbar-link" v-text="nickName" v-if="nickName" @click="enterOrder"></span>
-              <a href="javascript:void(0)" class="navbar-link" @click="showLoginModal" v-show="!nickName">登录</a>
-              <a href="javascript:void(0)" class="navbar-link" @click="showSignupModal" v-show="!nickName">注册</a>
-              <a href="javascript:void(0)" class="navbar-link" v-show="nickName" @click="Logout">登出</a>
-              <div class="navbar-cart-container" >
-                <span class="navbar-cart-count" v-if="cartCount > 0">{{cartCount}}</span>
-                <a class="navbar-link navbar-cart-link" href="javascript:;" @click="enterCart">
-                  <svg class="navbar-cart-logo">
-                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-cart"></use>
-                  </svg>
-                </a>
-              </div>
+              <ripple bg="#eb767d" speed="1">
+                <span class="nickName" v-text="nickName" v-if="nickName" @click="enterOrder"></span>
+              </ripple>
+               <ripple bg="#eb767d" speed="1" :br="br">
+                <a href="javascript:void(0)" class="navbar-link" @click="showLoginModal" v-show="!nickName">登录</a>
+              </ripple>
+              <ripple bg="#eb767d" speed="1" :br="br">
+                <a href="javascript:void(0)" class="navbar-link" @click="showSignupModal" v-show="!nickName">注册</a>
+              </ripple>
+              <ripple bg="#eb767d" speed="1" :br="br">
+                <a href="javascript:void(0)" class="navbar-link" v-show="nickName" @click="Logout">登出</a>
+              </ripple>
+              <ripple bg="#eb767d" speed="1" :br="br">
+                <div class="navbar-cart-container" >
+                  <span class="navbar-cart-count" v-if="cartCount > 0">{{cartCount}}</span>    
+                  <a class="navbar-link navbar-cart-link" href="javascript:;" @click="enterCart">
+                    <svg class="navbar-cart-logo">
+                      <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-cart"></use>
+                    </svg>
+                  </a>
+                </div>
+              </ripple>
             </div>
           </div>
         </div>
@@ -136,6 +146,8 @@
     import '@/assets/css/login.scss'
 
     const Modal = resolve => require(['@/components/Modal'], resolve)
+    const Ripple = resolve => require(['@/components/Ripple'],resolve)
+
     import axios from 'axios'
     import { mapState } from 'vuex'
     export default {
@@ -157,7 +169,8 @@
               signUpRightTip: false,
               signUpRightTipText: '',
               captcha: '',
-              captchaImg: '验证码'
+              captchaImg: '验证码',
+              br: true
             }
         },
         computed: {
@@ -174,7 +187,8 @@
           }*/
         },
         components: {
-          Modal
+          Modal,
+          Ripple
         },
         mounted() {
           this.checkLogin()

@@ -15,14 +15,14 @@
             <div class="priceEcharts" ref="priceEcharts"></div>
             <ul class="goods-list">
               <li v-for="(good, index) in goodsList" key="index" class="goods-item">
-                 <ripple speed="1">
-                  <img :src="`static/${good.productImage}`" alt="">
-                  <div>
-                    <h3><strong>商品：</strong>{{good.productName}}</h3>
-                    <span class="item-sp"><strong>价格：</strong>{{good.salePrice | currency('￥')}}</span>
-                    <span class="item-sp"><strong>数量：</strong>{{good.productNum}}</span>
-                    <span class="item-sp"><strong>总价：</strong>{{(good.salePrice * good.productNum) | currency('￥')}}</span>
-                  </div>
+                 <ripple speed="1"> 
+                    <img :src="`static/${good.productImage}`" alt="">
+                    <div>
+                      <h3><strong>商品：</strong>{{good.productName}}</h3>
+                      <span class="item-sp"><strong>价格：</strong>{{good.salePrice | currency('￥')}}</span>
+                      <span class="item-sp"><strong>数量：</strong>{{good.productNum}}</span>
+                      <span class="item-sp"><strong>总价：</strong>{{(good.salePrice * good.productNum) | currency('￥')}}</span>
+                    </div>
                   </ripple>
               </li>
             </ul>

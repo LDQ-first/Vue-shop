@@ -32,8 +32,7 @@
             <ul class="order-item-list clearfix">
                 <li v-for="(item, index) in orderList" key="index" class="order-item" 
                 :class="{'checked': checkIndex == index }" @click="checkIndex = index; ">
-                    <ripple bg="#C9F8F0">
-                    <div>
+                    <ripple bg="#C9F8F0" children="two">
                         <ul class="order-list">
                             <li><strong>订单ID: </strong>{{item.orderId}}</li>
                             <li class="total"><strong>订单总价: </strong>{{item.orderTotal | currency('￥')}}</li>
@@ -50,7 +49,6 @@
                                 <svg class="icon icon-del"><use xlink:href="#icon-del"></use></svg>
                             </a>
                         </div>
-                    </div>
                     </ripple>
                 </li>
             </ul>

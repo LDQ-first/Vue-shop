@@ -56,35 +56,64 @@ a {
   padding-top: 10px;
 }
 
-.navbar-link {
-  padding-left: 15px;
+@mixin link {
+  display: inline-block;
+  line-height: 40px;
+  text-align: center;
   cursor: pointer;
+  z-index: 1;
+  position: relative;
+}
+
+.navbar-link {
+  @include link;
+  margin: 10px;
+  width: 40px;
+  border-radius: 50%;
+}
+
+.nickName {
+  @include link;
+  line-height: 20px;
+  margin: 10px 20px;
 }
 
 .navbar-cart-container {
   position: relative;
-}
-
-.navbar-cart-count {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin: 10px;
+  display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  top: -9px;
-  right: -11px;
-  width: 20px;
-  border-radius: 10px;
-  color: white;
-  background-color: #eb767d;
-  font-size: 16px;
-  font-weight: bold;
-  text-align: center;
+  .navbar-cart-link {
+    display: flex;
+    z-index: 1;
+  }
+  .navbar-cart-count {
+    position: absolute;
+    z-index: 2;
+    top: 2px;
+    right: -5px;
+    width: 20px;
+    border-radius: 10px;
+    color: white;
+    background-color: #eb767d;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+  }
+  .navbar-cart-logo {
+    width: 25px;
+    height: 25px;
+    transform: scaleX(-1);
+  }
 }
 
-.navbar-cart-logo {
-  width: 25px;
-  height: 25px;
-  transform: scaleX(-1);
-}
+
+
+
 
 .regi_form_input {
   position: relative;
