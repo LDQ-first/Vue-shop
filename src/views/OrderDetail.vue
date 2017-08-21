@@ -5,7 +5,7 @@
     <nav-bread>
       <span class="item-sp">订单详情</span>
     </nav-bread>
-    <svg style="position: absolute; wilih: 0; height: 0; overflow: hidden;" version="1.1"
+   <!-- <svg style="position: absolute; wilih: 0; height: 0; overflow: hidden;" version="1.1"
          xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <defs>
         <symbol id="icon-add" viewBox="0 0 32 32">
@@ -42,7 +42,7 @@
                 d="M23.958 21.837l-6.958-6.489v-6.282c0-0.827-0.673-1.5-1.5-1.5s-1.5 0.673-1.5 1.5v6.934c0 0.414 0.174 0.814 0.477 1.098l7.435 6.934c0.279 0.259 0.642 0.402 1.023 0.402 0.415 0 0.814-0.174 1.096-0.477 0.564-0.605 0.532-1.555-0.073-2.12z"></path>
         </symbol>
       </defs>
-    </svg>
+    </svg>-->
     <div class="container clearfix">
         <div class="order">
             <div class="page-title-normal">
@@ -53,11 +53,13 @@
             <div class="priceEcharts" ref="priceEcharts"></div>
             <ul class="goods-list">
               <li v-for="(good, index) in goodsList" key="index" class="goods-item">
+                 <ripple speed="1">
                   <img :src="`static/${good.productImage}`" alt="">
                   <h3><strong>商品：</strong>{{good.productName}}</h3>
                   <span class="item-sp"><strong>价格：</strong>{{good.salePrice | currency('￥')}}</span>
                   <span class="item-sp"><strong>数量：</strong>{{good.productNum}}</span>
                   <span class="item-sp"><strong>总价：</strong>{{(good.salePrice * good.productNum) | currency('￥')}}</span>
+                  </ripple>
               </li>
             </ul>
             <ul class="order-list">
@@ -90,6 +92,7 @@
     const NavHeader = resolve => require(['@/components/Header'], resolve)
     const NavFooter = resolve => require(['@/components/Footer'], resolve)
     const NavBread = resolve => require(['@/components/Bread'], resolve)
+    const Ripple = resolve => require(['@/components/Ripple'],resolve)
     
     import axios from 'axios'
     import { mapState } from 'vuex'
@@ -109,6 +112,7 @@
           NavHeader,
           NavFooter,
           NavBread,
+          Ripple
         },
         computed: {
           DetailData() {

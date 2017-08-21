@@ -33,6 +33,7 @@
               <div slot="list" class="accessory-list col-4">
                 <ul>
                   <li v-for="(item, index) in goodsList" key="index">
+                    <ripple>
                     <div class="pic">
                       <a href="javascript:;"><img v-lazy="`static/${item.productImage}`" alt="" @click="showPirceDetail(item)"></a>
                     </div>
@@ -43,6 +44,7 @@
                           <a href="javascript:;" class="btn btn--m" @click="addCart(item.productId)">加入购物车</a>
                         </div>
                     </div>
+                    </ripple>
                   </li>
                 </ul>
               </div>
@@ -107,6 +109,7 @@
     const NavFooter = resolve => require(['@/components/Footer'], resolve)
     const Bread = resolve => require(['@/components/Bread'], resolve)
     const Modal = resolve => require(['@/components/Modal'], resolve)
+    const Ripple = resolve => require(['@/components/Ripple'],resolve)
 
     import axios from 'axios'
     import echarts from 'echarts/lib/echarts'
@@ -156,7 +159,8 @@
             NavFooter,
             Bread,
             Modal,
-            pullRefresh
+            pullRefresh,
+            Ripple
         },
         mounted: function () {
             this.getGoodsList()

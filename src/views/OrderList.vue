@@ -32,6 +32,7 @@
             <ul class="order-item-list clearfix">
                 <li v-for="(item, index) in orderList" key="index" class="order-item" 
                 :class="{'checked': checkIndex == index }" @click="checkIndex = index; ">
+                    <ripple bg="#C9F8F0">
                     <div>
                         <ul class="order-list">
                             <li><strong>订单ID: </strong>{{item.orderId}}</li>
@@ -50,6 +51,7 @@
                             </a>
                         </div>
                     </div>
+                    </ripple>
                 </li>
             </ul>
         </div>
@@ -76,6 +78,7 @@
     const NavFooter = resolve => require(['@/components/Footer'], resolve)
     const NavBread = resolve => require(['@/components/Bread'], resolve)
     const Modal = resolve => require(['@/components/Modal'], resolve)
+    const Ripple = resolve => require(['@/components/Ripple'],resolve)
     
     import axios from 'axios'
     export default {
@@ -95,7 +98,8 @@
           NavHeader,
           NavFooter,
           NavBread,
-          Modal
+          Modal,
+          Ripple
         },
         mounted() {
             this.init()
