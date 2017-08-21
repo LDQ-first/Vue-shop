@@ -336,11 +336,15 @@
 
 .accessory-result {
   display: flex;
+ 
   .filter {
     margin-right: 25px;
   }
   .accessory-list-wrap {
     flex: 1;
+  }
+  .accessory-list {
+     padding: 1em 0;
   }
 }
 

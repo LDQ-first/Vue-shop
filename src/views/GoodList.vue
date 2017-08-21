@@ -1,5 +1,6 @@
 <template>
     <div>
+    <div class="page-container">
       <nav-header/>
       <bread>
         <span>商品</span>
@@ -79,10 +80,9 @@
         <div slot="message">
           <div class="goodsPriceEcharts" ref="goodsPriceEcharts"></div>
         </div>
-        <div slot="btnGroup" class="btnGroup">
-          
-        </div>
+        <div slot="btnGroup" class="btnGroup"></div>
       </modal>
+      </div>
      <nav-footer class="noPadding"/>
     </div>
 </template>

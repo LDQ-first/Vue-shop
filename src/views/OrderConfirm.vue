@@ -1,5 +1,6 @@
 <template>
   <div>
+  <div class="page-container">
     <nav-header></nav-header>
     <nav-bread>
       <span>订单确认</span>
@@ -123,6 +124,7 @@
           </div>
         </div>
       </div>
+    </div>
     </div>
     <nav-footer></nav-footer>
   </div>

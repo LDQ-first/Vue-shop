@@ -1,5 +1,6 @@
 <template>
-  <div class="orderDetail-wrapper" >
+  <div>
+  <div class="page-container">
     <nav-header></nav-header>
     <nav-bread>
       <span class="item-sp">订单详情</span>
@@ -77,6 +78,7 @@
           <div class="enterOrderList">
             <a href="javascript:;" @click="entryOrderList">订单列表</a>
           </div>
+    </div>
     </div>
     <nav-footer class="noPadding"></nav-footer>
   </div>

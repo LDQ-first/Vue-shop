@@ -1,5 +1,6 @@
 <template>
   <div>
+  <div class="page-container">
     <nav-header></nav-header>
     <nav-bread>
       <span>我的订单列表</span>
@@ -63,6 +64,7 @@
         <a class="btn btn--m btn--red" href="javascript:;" @click="modalConfirm = false">关闭</a>
       </div>
     </Modal>
+    </div>
     <nav-footer class="noPadding"></nav-footer>
   </div>
 </template>

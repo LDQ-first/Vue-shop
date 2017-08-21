@@ -1,5 +1,6 @@
 <template>
-    <div>
+   <div>
+    <div class="page-container">
        <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1"
          xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <defs>
@@ -169,7 +170,8 @@
           <div slot="btnGroup" class="btnGroup">
             <a href="javascript:;" class="btn-login" @click="addAddress">添加</a>
           </div>
-        </Modal>
+        </Modal>        
+      </div> 
       <nav-footer></nav-footer>
     </div>
 </template>

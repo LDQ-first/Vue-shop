@@ -1,5 +1,6 @@
 <template>
     <div>
+    <div class="page-container">
       <nav-header></nav-header>
       <div class="container">
         <div class="page-title-normal">
@@ -34,7 +35,8 @@
           </div>
         </div>
       </div>
-      <nav-footer></nav-footer>
+      </div>
+      <nav-footer class="noPadding"></nav-footer>
     </div>
 </template>
 <script>

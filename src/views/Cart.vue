@@ -1,5 +1,6 @@
 <template>
   <div>
+  <div class="page-container">
     <nav-header></nav-header>
     <nav-bread>
       <span>我的购物车</span>
@@ -146,8 +147,9 @@
         <a class="btn btn--m btn--red" href="javascript:;" @click="clearAllModal = false">关闭</a>
       </div>
     </Modal>
-    <nav-footer></nav-footer>
   </div>
+   <nav-footer></nav-footer>
+   </div>
 </template>
 <style>
   .input-sub,.input-add{
