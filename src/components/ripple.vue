@@ -71,7 +71,6 @@ export default {
     .cov-ripple.animate {
         animation: ripple 0.65s linear;
     }
-
     @keyframes ripple {
         100% {
             opacity: 0;
