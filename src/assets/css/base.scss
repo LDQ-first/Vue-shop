@@ -1127,3 +1127,33 @@ html {
                 0 0 8px rgba(145, 138, 225, 0.4)
   } 
 }
+
+.showX-enter-active {
+  transition: all .8s ease-in;
+}
+
+.showX-leave-active {
+  transition: all .6s ease-out;
+}
+
+.showX-enter, .showX-leave-active {
+  transform: translateX(20%);
+  opacity: 0;
+  visibility: hidden;
+}
+
+
+.showY-enter-active {
+  transition: all .8s ease-in;
+}
+
+.showY-leave-active {
+  transition: all .5s ease-out;
+}
+
+.showY-enter, .showY-leave-active {
+  transform: translateY(-20%);
+  opacity: 0;
+  visibility: hidden;
+}
+

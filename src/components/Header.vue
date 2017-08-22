@@ -29,7 +29,7 @@
             <div class="navbar-menu-container">
               <!--<a href="/" class="navbar-link">我的账户</a>-->
               <ripple bg="#eb767d" speed="1">
-                <span class="nickName" v-text="nickName" v-if="nickName" @click="enterOrder"></span>
+                <span class="nickName" v-text="nickName" v-if="nickName" @click="enterOrder" :title="nickName"></span>
               </ripple>
                <ripple bg="#eb767d" speed="1" :br="br">
                 <a href="javascript:void(0)" class="navbar-link" @click="showLoginModal" v-show="!nickName">登录</a>

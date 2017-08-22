@@ -74,8 +74,13 @@ a {
 
 .nickName {
   @include link;
-  line-height: 20px;
-  margin: 10px 20px;
+  line-height: 30px;
+  padding-top: 6px;
+  margin: 10px;
+  width: 60px;
+  text-overflow:ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .navbar-cart-container {

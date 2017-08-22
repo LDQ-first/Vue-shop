@@ -1,12 +1,27 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <transition :name="name">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'app'
+  name: 'app',
+  data() {
+    return {
+      name: 'showX'
+    } 
+  },
+  mounted() {
+    this.randomTransition()
+  },
+  methods: {
+    randomTransition() {
+      this.name = Math.round(Math.random() * 10) > 5 ? 'showX' : 'showY'
+    }
+  }
 }
 </script>
 
