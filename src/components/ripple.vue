@@ -1,10 +1,17 @@
 <template>
-    <div class="ripple">
-        <div class="slot" :class="{one: children === 'one', two: children === 'two'}">
-            <slot></slot>
+    <div>
+        <div class="ripple" v-if="children">
+            <div class="slot" :class="{one: children === 'one', two: children === 'two'}">
+                <slot name="children"></slot>
+            </div>
+            <div @click="reppleClick" class="cov-button-ripple" :class="{br:br}"
+            ref="covButtonRipple">   
+                <span class="cov-ripple" ref="covRipple" :class="{animate: animate}"></span>
+            </div>
         </div>
-        <div @click="reppleClick" class="cov-button-ripple" :class="{br:br}"
+        <div @click="reppleClick" v-else class="cov-purebutton-ripple" :class="{br:br}"
         ref="covButtonRipple">   
+            <slot name="pure"></slot>
             <span class="cov-ripple" ref="covRipple" :class="{animate: animate}"></span>
         </div>
     </div>
@@ -75,11 +82,11 @@ export default {
    .slot {
       position: relative;
    }
-   .slot.one * {
+   .slot.one .children * {
         position: relative;
         z-index: 1;
     }
-   .slot.two *>* {
+   .slot.two .children *>* {
         position: relative;
         z-index: 1;
     }
@@ -92,7 +99,13 @@ export default {
         overflow: hidden;
         cursor: pointer;
     }
-    .cov-button-ripple.br {
+    .cov-purebutton-ripple {
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+    }
+    .cov-button-ripple.br,
+    .cov-purebutton-ripple.br {
         border-radius: 50%;
     }
     .cov-ripple {

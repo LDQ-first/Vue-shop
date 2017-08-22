@@ -33,21 +33,23 @@
                 <li v-for="(item, index) in orderList" key="index" class="order-item" 
                 :class="{'checked': checkIndex == index }" @click="checkIndex = index; ">
                     <ripple bg="#C9F8F0" children="two">
-                        <ul class="order-list">
-                            <li><strong>订单ID: </strong>{{item.orderId}}</li>
-                            <li class="total"><strong>订单总价: </strong>{{item.orderTotal | currency('￥')}}</li>
-                            <li class="date"><strong>创建时间: </strong>{{item.createDate}}</li>
-                            <li class="user"><strong>收货人: </strong>{{item.addressInfo.userName}}</li>
-                            <li class="tel"><strong>手机: </strong>{{item.addressInfo.tel}}</li>
-                            <li class="street"><strong>收货地址: </strong>{{item.addressInfo.streetName}}</li>
-                        </ul>
-                        <div class="more">
-                            <a href="javascript:;" @click="checkIndex = index;enterDetail()">详细信息</a>
-                        </div>
-                        <div class="order-opration order-del">
-                            <a href="javascript:;" class="order-del-btn" @click="delOrderConfirm(item)">
-                                <svg class="icon icon-del"><use xlink:href="#icon-del"></use></svg>
-                            </a>
+                        <div class="children" slot="children">
+                            <ul class="order-list">
+                                <li><strong>订单ID: </strong>{{item.orderId}}</li>
+                                <li class="total"><strong>订单总价: </strong>{{item.orderTotal | currency('￥')}}</li>
+                                <li class="date"><strong>创建时间: </strong>{{item.createDate}}</li>
+                                <li class="user"><strong>收货人: </strong>{{item.addressInfo.userName}}</li>
+                                <li class="tel"><strong>手机: </strong>{{item.addressInfo.tel}}</li>
+                                <li class="street"><strong>收货地址: </strong>{{item.addressInfo.streetName}}</li>
+                            </ul>
+                            <div class="more">
+                                <a href="javascript:;" @click="checkIndex = index;enterDetail()">详细信息</a>
+                            </div>
+                            <div class="order-opration order-del">
+                                <a href="javascript:;" class="order-del-btn" @click="delOrderConfirm(item)">
+                                    <svg class="icon icon-del"><use xlink:href="#icon-del"></use></svg>
+                                </a>
+                            </div>
                         </div>
                     </ripple>
                 </li>

@@ -33,17 +33,19 @@
               <div slot="list" class="accessory-list col-4">
                 <ul>
                   <li v-for="(item, index) in goodsList" key="index">
-                    <ripple speed="1" children="two">   
-                    <div class="pic">
-                      <a href="javascript:;"><img v-lazy="`static/${item.productImage}`" alt="" @click="showPirceDetail(item)"></a>
-                    </div>
-                    <div class="main">
-                      <div class="name">{{item.productName}}</div>
-                      <div class="price">{{item.salePrice | currency('￥')}}</div>   
-                        <div class="btn-area">
-                          <a href="javascript:;" class="btn btn--m" @click="addCart(item.productId)">加入购物车</a>
+                    <ripple speed="1" children="two">  
+                      <div class="children" slot="children">
+                        <div class="pic">
+                          <a href="javascript:;"><img v-lazy="`static/${item.productImage}`" :title="item.productName" @click="showPirceDetail(item)"></a>
                         </div>
-                    </div>
+                        <div class="main">
+                          <div class="name">{{item.productName}}</div>
+                          <div class="price">{{item.salePrice | currency('￥')}}</div>   
+                            <div class="btn-area">
+                              <a href="javascript:;" class="btn btn--m" @click="addCart(item.productId)">加入购物车</a>
+                            </div>
+                        </div>
+                      </div> 
                     </ripple>
                   </li>
                 </ul>

@@ -29,19 +29,19 @@
             <div class="navbar-menu-container">
               <!--<a href="/" class="navbar-link">我的账户</a>-->
               <ripple bg="#eb767d" speed="1">
-                <span class="nickName" v-text="nickName" v-if="nickName" @click="enterOrder" :title="nickName"></span>
+                <span slot="pure" class="nickName" v-text="nickName" v-if="nickName" @click="enterOrder" :title="nickName"></span>
               </ripple>
                <ripple bg="#eb767d" speed="1" :br="br">
-                <a href="javascript:void(0)" class="navbar-link" @click="showLoginModal" v-show="!nickName">登录</a>
+                <a slot="pure" href="javascript:void(0)" class="navbar-link" @click="showLoginModal" v-show="!nickName">登录</a>
               </ripple>
               <ripple bg="#eb767d" speed="1" :br="br">
-                <a href="javascript:void(0)" class="navbar-link" @click="showSignupModal" v-show="!nickName">注册</a>
+                <a slot="pure" href="javascript:void(0)" class="navbar-link" @click="showSignupModal" v-show="!nickName">注册</a>
               </ripple>
               <ripple bg="#eb767d" speed="1" :br="br">
-                <a href="javascript:void(0)" class="navbar-link" v-show="nickName" @click="Logout">登出</a>
+                <a slot="pure" href="javascript:void(0)" class="navbar-link" v-show="nickName" @click="Logout">登出</a>
               </ripple>
               <ripple bg="#eb767d" speed="1" :br="br">
-                <div class="navbar-cart-container" >
+                <div slot="pure" class="navbar-cart-container" >
                   <span class="navbar-cart-count" v-if="cartCount > 0">{{cartCount}}</span>    
                   <a class="navbar-link navbar-cart-link" href="javascript:;" @click="enterCart">
                     <svg class="navbar-cart-logo">
@@ -95,14 +95,6 @@
           </div>
         </div>
         <div class="md-overlay " v-if="loginModalFlag" @click="loginModalFlag=false"></div>
-         <Modal :mdShow="mdShow" @close="closeModal">
-          <p slot="message">
-            请先登录，否则无法进入到购物车中!
-          </p>
-          <div slot="btnGroup" class="btnGroup">
-            <a class="btn btn--m" @click="mdShow=false">关闭</a>
-          </div>
-        </Modal>
         <Modal :mdShow="signupModalFlag" @close="closeModal">
           <div slot="title" class="md-title">注册</div>
           <div slot="message">
@@ -137,6 +129,14 @@
           </div>
           <div slot="btnGroup" class="btnGroup">
             <a href="javascript:;" class="btn-login" @click="SignUp">注册</a>
+          </div>
+        </Modal>
+        <Modal :mdShow="mdShow" @close="closeModal">
+          <p slot="message">
+            请先登录，否则无法进入到购物车中!
+          </p>
+          <div slot="btnGroup" class="btnGroup">
+            <a class="btn btn--m" @click="mdShow=false">关闭</a>
           </div>
         </Modal>
       </header>

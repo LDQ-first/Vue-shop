@@ -808,6 +808,15 @@ html {
   position: relative;
 }
 
+.header {
+  .md-content {
+    color: #004d78;
+    a {
+      color: #004d78;
+    }
+  }
+}
+
 .footer {
   background-color: #0070b0;
   color: #EEE;
