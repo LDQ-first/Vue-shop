@@ -7,7 +7,7 @@ mongoose.Promise = global.Promise
 /*mongoose.connect('mongodb://localhost:27017/shopdb')*/
 
 var env = process.env.NODE_ENV || 'development'
-console.log(env)
+console.log('NODE_ENV: ', env)
 if(env === 'development') {
     mongoose.connect('mongodb://localhost:27017/shopdb')
 }
