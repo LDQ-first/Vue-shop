@@ -9,7 +9,7 @@
             "env_production": {
                 "NODE_ENV": "production"
             }
-        },
+        }
     ],
     "deploy": { //部署任务
         "start": { //任务名
