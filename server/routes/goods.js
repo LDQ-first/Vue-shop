@@ -4,7 +4,17 @@ const mongoose = require('mongoose')
 const Goods = require('../models/goods.js')
 mongoose.Promise = global.Promise
 
-mongoose.connect('mongodb://localhost:27017/shopdb')
+/*mongoose.connect('mongodb://localhost:27017/shopdb')*/
+
+var env = process.env.NODE_ENV || 'development'
+console.log(env)
+if(env === 'development') {
+    mongoose.connect('mongodb://localhost:27017/shopdb')
+}
+else {
+ mongoose.connect('mongodb://ldqvip.vueshop:ldq88715586$tdN@127.0.0.1:21321/shopdb')
+}
+
 
 mongoose.connection.on('connected', () => {
     console.log("MongoDB connected success")
