@@ -8,9 +8,9 @@
     "git": "npm run build && git add . && git commit -m 'modify' && git push origin master",
     "express": "cnpm install -g express-generator",
     "ejs": "cnpm install --save ejs",
-    "server": "node ./bin/www",
-    "pm2start": "pm2 start ./bin/www",
-    "pm2stop": "pm2 stop ./bin/www",
+    "server": "node ./bin/vueshop",
+    "pm2start": "pm2 start ./bin/vueshop",
+    "pm2stop": "pm2 stop ./bin/vueshop",
     "mongoose": "cnpm install --save mongoose",
     "session": "cnpm install --save express-session connect-mongo",
     "captcha": "cnpm install --save svg-captcha"
