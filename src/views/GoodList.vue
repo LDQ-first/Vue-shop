@@ -36,7 +36,7 @@
                     <ripple speed="1" children="two">  
                       <div class="children" slot="children">
                         <div class="pic">
-                          <a href="javascript:;"><img v-lazy="`static/${item.productImage}`" :title="item.productName" @click="showPirceDetail(item)"></a>
+                          <a href="javascript:;"><img v-lazy="`/static/${item.productImage}`" :title="item.productName" @click="showPirceDetail(item)"></a>
                         </div>
                         <div class="main">
                           <div class="name">{{item.productName}}</div>
