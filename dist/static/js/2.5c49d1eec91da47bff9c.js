@@ -1,0 +1,2 @@
+webpackJsonp([2],{37:function(t,n,a){var e=a(25)(null,a(593),null,null,null);t.exports=e.exports},593:function(t,n){t.exports={render:function(){var t=this,n=t.$createElement,a=t._self._c||n;return a("div",{staticClass:"nav-breadcrumb-wrap"},[a("div",{staticClass:"container"},[a("nav",{staticClass:"nav-breadcrumb"},[a("a",{attrs:{href:"/index/"}},[t._v("主页")]),t._v(" "),t._t("default")],2)])])},staticRenderFns:[]}}});
+//# sourceMappingURL=2.5c49d1eec91da47bff9c.js.map
