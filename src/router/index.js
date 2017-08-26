@@ -46,17 +46,6 @@ export default new Router({
         path: '/orderDetail',
         name: 'OrderDetail',
         component: OrderDetail
-    },
-     { 
-         path: '/index/',
-         redirect: to => {
-             if(document.location.hostname === 'localhost') {
-                 return {path:'/'}
-             }
-             else {
-                 return {path: '/vueshop/'}
-             }
-         }
-     }
+    }
   ]
 })

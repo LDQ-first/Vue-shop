@@ -2,7 +2,7 @@
    <div class="nav-breadcrumb-wrap">
         <div class="container">
           <nav class="nav-breadcrumb">
-            <a href="/index/">主页</a>
+            <a href="/vueshop/">主页</a>
             <slot></slot>
           </nav>
         </div>
