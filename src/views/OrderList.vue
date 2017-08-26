@@ -170,7 +170,6 @@
              },
              enterDetail() {
                  const data = this.orderList[this.checkIndex]
-                 console.log(this.checkIndex)
                  this.$store.commit('updeteDetailDate', data)
                  this.$router.push({
                      path: '/orderDetail'

@@ -126,7 +126,7 @@
             },
             echartsInit(goodsList, orderTotal) {
 
-             if(this.myCharts != '') {
+             if(this.myCharts) {
                echarts.dispose(this.myCharts)
              }
 

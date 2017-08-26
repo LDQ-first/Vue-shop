@@ -298,7 +298,7 @@
             },
              echartsInit(priceDetail, productName) {
 
-             if(this.myCharts != '') {
+             if(this.myCharts) {
                echarts.dispose(this.myCharts)
              }
 

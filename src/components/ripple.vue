@@ -47,7 +47,6 @@ export default {
             if(this.animate) {
                 return
             }
-            console.log(this.children)
             this.animate = true
             const button = this.$refs.covButtonRipple
             const ripple = this.$refs.covRipple
