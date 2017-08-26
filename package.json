@@ -18,6 +18,7 @@
     "pm2": "cnpm install -g pm2",
     "pm2start": "pm2 start server/bin/vueshop",
     "pm2stop": "pm2 stop server/bin/vueshop",
+    "pm2deploy": " pm2 deploy ecosystem.json start",
     "mongoose": "cnpm install --save mongoose",
     "infscroll": "cnpm install vue-infinite-scroll --save",
     "vuex": "cnpm install --save vuex",
