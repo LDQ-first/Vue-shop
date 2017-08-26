@@ -22,7 +22,7 @@
       </svg>
         <div class="navbar">
           <div class="navbar-left-container">
-            <a href="/">
+            <a href="/index/">
               <img class="navbar-brand-logo" src="/static/logo.png"></a>
           </div>
           <div class="navbar-right-container" style="display: flex;">

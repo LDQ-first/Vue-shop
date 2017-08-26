@@ -11,6 +11,7 @@ import OrderDetail from '@/views/OrderDetail'
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -46,6 +47,17 @@ export default new Router({
         path: '/orderDetail',
         name: 'OrderDetail',
         component: OrderDetail
-    }
+    },
+     { 
+         path: '/index/',
+         redirect: to => {
+             if(document.location.hostname === 'localhost') {
+                 return {path:'/'}
+             }
+             else {
+                 return {path: '/vueshop/'}
+             }
+         }
+     }
   ]
 })
