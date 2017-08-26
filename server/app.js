@@ -13,6 +13,19 @@ var goods = require('./routes/goods');
 const session = require('express-session')
 const mongoStore = require('connect-mongo')(session)
 
+var env = process.env.NODE_ENV || 'development'
+var sessionUrl = ''
+if(env === 'development') {
+    console.log('app.NODE_ENV: ', env)
+    sessionUrl = 'mongodb://127.0.0.1:27017/shopdb'
+}
+else {
+  console.log('app.NODE_ENV: ', env)
+  sessionUrl = 'mongodb://ldqvip.vueshop:ldq88715586$tdN@127.0.0.1:27017/shopdb'
+}
+console.log('sessionUrl: ', sessionUrl)
+
+
 var app = express();
 
 // view engine setup
@@ -54,7 +67,7 @@ saveUninitialized: false,
 //session存储实例
   store: new mongoStore({
   //  db: 'VueShop',
-    url: 'mongodb://localhost:27017/shopdb',
+    url: sessionUrl,
     collection: 'sessions'
   })
 }))
