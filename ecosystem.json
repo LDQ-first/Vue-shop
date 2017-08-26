@@ -20,7 +20,7 @@
             "repo": "git@github.com:LDQ-first/Vue-shop.git",
             "path": "/web/vueShop", //服务器项目位置
             "ssh_options": "StrictHostKeyChecking=no", //取消key校验
-            "post-deploy": "cd server && cnpm i && pm2 startOrRestart ../ecosystem.json --env production",
+            "post-deploy": "cd server && rm -rf node_modules && cnpm i && pm2 startOrRestart ../ecosystem.json --env production",
             "env": {
                 "NODE_ENV": "production"
             }
