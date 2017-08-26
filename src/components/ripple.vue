@@ -53,6 +53,7 @@ export default {
             const timer = (this.speed * 1000 || 650) + 20 
             if (ripple) {
                 const d = Math.max(button.offsetHeight, button.offsetWidth)
+                ripple.setAttribute('style', `height: ${d}px; width: ${d}px;`)
                 const x = e.offsetX - ripple.offsetWidth / 2
                 const y = e.offsetY - ripple.offsetHeight / 2
                 ripple.setAttribute('style', `height: ${d}px; width: ${d}px;
