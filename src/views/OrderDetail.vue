@@ -17,7 +17,7 @@
               <li v-for="(good, index) in goodsList" key="index" class="goods-item">
                  <ripple speed="1" children="true"> 
                    <div slot="children" class="children">
-                      <img :src="`static/${good.productImage}`" alt="">
+                      <img :src="`/static/${good.productImage}`" alt="">
                       <div>
                         <h3><strong>商品：</strong>{{good.productName}}</h3>
                         <span class="item-sp"><strong>价格：</strong>{{good.salePrice | currency('￥')}}</span>
