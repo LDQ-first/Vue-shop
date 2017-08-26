@@ -13,7 +13,7 @@ if(env === 'development') {
 }
 else {
   console.log('NODE_ENV: ', env)
-  mongoose.connect('mongodb://ldqvip.vueshop:ldq88715586$tdN@127.0.0.1:27017/shopdb')
+  mongoose.connect('mongodb://ldqvip:ldq88715586$tdN@127.0.0.1:27017/shopdb')
 }
 
 
