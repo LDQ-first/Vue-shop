@@ -11,7 +11,7 @@ router.get('/', (req, res, next) => {
 
 
 router.get('/isCaptchaTrue', (req, res, next) => {
-  const captcha = req.param('captcha').toLowerCase()
+  const captcha = req.query.captcha.toLowerCase()
   if (req.session.captcha.toLowerCase() !== captcha) {
     res.json({
       status: '500',
@@ -45,8 +45,8 @@ router.get('/captcha', (req, res, next) => {
 
 router.get('/checkPwd', (req, res, next) => {
   const param = {
-    userName: req.param('userName'),
-    userPwd: req.param('userPwd')
+    userName: req.query.userName,
+    userPwd: req.query.userPwd
   }
   User.findOne(param)
     .then(doc => {
@@ -75,7 +75,7 @@ router.get('/checkPwd', (req, res, next) => {
 })
 
 router.get('/isRepeated', (req, res, next) => {
-  const userName = req.param('userName')
+  const userName = req.query.userName
   User.findOne({ userName: userName })
     .then(doc => {
       if (doc) {
@@ -738,7 +738,7 @@ router.post("/payMent", (req, res, next) => {
 router.get("/orderDetail", (req, res, next) => {
   //const userId = req.cookies.userId,
   const userId = req.session.user.userId,
-    orderId = req.param("orderId")
+    orderId = req.query.orderId
   User.findOne({ userId: userId })
     .then(userInfo => {
       if (userInfo) {
@@ -831,8 +831,8 @@ router.get("/getCartCount", (req, res, next) => {
 //订单列表
 router.get('/orderList', (req, res, next) => {
     const userId = req.session.user.userId,
-          page = req.param("page"),
-          pageSize = req.param("pageSize"),
+          page = req.query.page,
+          pageSize = req.query.pageSize,
           skip = (page - 1) * pageSize
     
     User.findOne({userId: userId})

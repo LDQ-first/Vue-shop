@@ -30,10 +30,10 @@ mongoose.connection.on('disconnected', () => {
 
 
 router.get('/list', (req, res, next) => {
-   const sort = req.param("sort")
-   const page = req.param("page")
-   const pageSize = req.param("pageSize")
-   const priceChecked = req.param("priceChecked")
+   const sort = req.query.sort
+   const page = req.query.page
+   const pageSize = req.query.pageSize
+   const priceChecked = req.query.priceChecked
    let params = {}
    let priceGt = '', priceLte = ''
    if(priceChecked !== 'all') {
@@ -163,7 +163,7 @@ router.post("/addCart", (req, res, next) => {
 
 
 router.get('/priceDetail', (req, res, next) => {
-    const productId = req.param('productId')
+    const productId = req.query.productId
     Goods.findOne({productId: productId})
          .then(doc => {
              if(doc) {
