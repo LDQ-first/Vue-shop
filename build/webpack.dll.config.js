@@ -4,7 +4,7 @@ const path = require('path')
 module.exports = {
     entry: {
         vendor: ['vue/dist/vue.esm.js', 'vue-router', 'vuex', 'axios', 
-        'vue-lazyload', 'echarts', 'vue-infinite-scroll']
+        'vue-lazyload', 'vue-infinite-scroll']
     },
     output: {
         path: path.join(__dirname, '../static/public/js'),
