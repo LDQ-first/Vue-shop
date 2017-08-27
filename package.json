@@ -25,7 +25,8 @@
     "session": "cnpm install --save express-session connect-mongo",
     "sass": "cnpm install --save sass-loader node-sass",
     "captcha": "cnpm install --save svg-captcha",
-    "echarts": "cnpm install echarts --save"
+    "echarts": "cnpm install echarts --save",
+    "dll": "webpack --config ./build/webpack.dll.config.js --progress"
   },
   "dependencies": {
     "axios": "^0.16.2",

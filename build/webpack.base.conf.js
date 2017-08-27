@@ -2,6 +2,7 @@ var path = require('path')
 var utils = require('./utils')
 var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
+const webpack = require('webpack')
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -62,5 +63,18 @@ module.exports = {
         }
       }
     ]
-  }
+  },
+  plugins: [
+    new webpack.optimize.CommonsChunkPlugin({
+      async: 'shared-module',
+      minChunks: (module, count) => (
+        count >= 2    // 当一个模块被重复引用2次或以上的时候单独打包起来。 
+      )
+    }),
+    //这个plugin是用于引入dll里生成的json的。
+    new webpack.DllReferencePlugin({
+      context: __dirname,
+      manifest: require('../static/public/js/vendor-mainfest.json')  // 指向这个json
+    })
+  ]
 }
