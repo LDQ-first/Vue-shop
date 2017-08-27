@@ -1,6 +1,6 @@
 <template>
     <div ref="pullRefresh" class="vue-pull-refresh">
-        <div class="vue-pull-refresh-msg">
+        <div class="vue-pull-refresh-msg" ref="refreshMsg">
             <div v-if="loading" class="hidenArea">
                 <span class="svg-wrapper">
                 <svg t="1497367491334"
@@ -43,7 +43,7 @@
             height: 50px;
             text-align: center;
             line-height: 50px;   
-            border-bottom: 2px solid #F19499;
+            border-bottom: 2px solid #fb737a;
             .hidenArea {
                  color: #918AE1;
                  font-weight: bold;
@@ -100,21 +100,25 @@
             }
         },
         mounted() {
-            const pullRefresh = this.$refs.pullRefresh
+            const pullRefresh = this.$refs.pullRefresh,
+                  refreshMsg = this.$refs.refreshMsg
             pullRefresh.addEventListener('touchstart', (e) => {
                 this.start(e)
             })
 
             pullRefresh.addEventListener('touchmove', (e) => {
-                this.moves(e, pullRefresh)
+                this.moves(e, pullRefresh, refreshMsg)
             })
 
             pullRefresh.addEventListener('touchend', (e) => {
-                this.end(e, pullRefresh)
+                this.end(e, pullRefresh, refreshMsg)
             })
         },
         methods: {
             start(e) {
+                if(document.body.scrollTop > 0) {
+                    return
+                }
                 if(this.loading) {
                     e.preventDefault()
                     return
@@ -122,7 +126,10 @@
                 // 取第一个手指的触摸点作为起始点
                 this.touchStart = e.targetTouches[0].clientY
             },
-            moves(e, pullRefresh) {
+            moves(e, pullRefresh, refreshMsg) {
+                 if(document.body.scrollTop > 0) {
+                    return
+                }
                 if(!this.touchStart) {
                     e.preventDefault()
                     return
@@ -136,10 +143,12 @@
                     this.distance = touch.clientY - this.touchStart
                     if(this.distance > 0) {
                         e.preventDefault()
-                        if(this.distance < 70) {
+                        if(this.distance < 80) {
                             pullRefresh.style.overflow = 'inherit'
                             pullRefresh.style.transform = 
                             `translate3D(0px, ${this.distance}px, 0px)`
+                            refreshMsg.style.height = `${this.distance}px`
+                            refreshMsg.style.lineHeight = `${this.distance}px`
                             if(this.distance > 40) {
                                 this.msg = '释放刷新ヽ(￣▽￣)و'
                                 this.flag = true
@@ -150,8 +159,11 @@
                     }
                 }
             },
-            end(e, pullRefresh) {
-                if(this.distance === 0) {
+            end(e, pullRefresh, refreshMsg) {
+                if(document.body.scrollTop > 0) {
+                    return
+                }
+                if(this.distance === 0 ) {
                     return 
                 }
                 if(this.loading) {
@@ -160,6 +172,8 @@
                 }
                 if(this.flag && this.distance > 0) {
                     pullRefresh.style.transform = 'translate3D(0px, 50px, 0px)'
+                    refreshMsg.style.height = `50px`
+                    refreshMsg.style.lineHeight = `50px`
                     this.loading = true
                     this.next()
                         .then(() => {

@@ -143,7 +143,7 @@
             <a class="btn btn--m btn--red" href="javascript:;" @click.prevent="isMdShow=false">取消</a>
         </div>
       </modal>
-      <Modal :mdShow="addressModalFlag" @close="closeaddressModal">
+      <Modal :mdShow="addressModalFlag" @close="closeaddressModal" class="addressModal">
           <div slot="title" class="md-title">添加地址</div>
           <div slot="message">
             <div class="error-wrap">
@@ -330,6 +330,8 @@
             },
             showAddressModal() {
               this.addressModalFlag = true
+              this.addressErrorText = ''
+              this.addressErrorTip = false
               this.newAddress = {
                   "userName" : "",
                   "streetName" : "",

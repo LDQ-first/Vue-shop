@@ -974,12 +974,15 @@ html {
   top: 50%;
   left: 50%;
   width: 535px;
-  height: auto;
+ /* height: 100vh;*/
   transform: translate(-50%, -50%);
   visibility: hidden;
   z-index: 201;
   &.md-modal-m {
     width: 620px;
+  }
+  .md-top {
+    height: 60px;
   }
   .md-close {
     position: absolute;
@@ -1096,7 +1099,7 @@ html {
       padding: 0 !important;
     }
     .confirm-tips, .alert-tips {
-      padding: 60px 10px;
+      padding: 0  10px 60px; 
     }
     .confirm-tips {
       min-height: 90px;
@@ -1122,8 +1125,32 @@ html {
       font-size: 12px;
     }
   }
+  
 }
 
+
+@media only screen and (max-width: 480px) {
+  .addressModal {
+    .md-modal-inner {
+      height: 75vh;
+      overflow-y: auto;
+      .md-content {
+      height: calc(100% - 60px);
+       box-sizing: content-box;
+       padding-bottom: 180px;
+        .confirm-tips {
+          padding: 0 10px;
+        }
+        position: relative;
+        .btn-wrap {
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+        }
+      }
+    }
+  }
+}
 
 .clearAll {
   margin: 10px 0;
