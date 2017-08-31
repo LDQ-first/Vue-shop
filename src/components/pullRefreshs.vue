@@ -171,7 +171,6 @@
                    return
                 }
                 if( this.distance > 80 && this.distance < 120) {
-                     console.log('this.distance: ', this.distance )
                      pullRefresh.scrollTop = 0
                     pullRefresh.style.overflow = 'auto'
                     pullRefresh.style.transform = 'translate3D(0px, 0px, 0px)'
