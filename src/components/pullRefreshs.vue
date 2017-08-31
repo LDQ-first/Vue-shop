@@ -141,15 +141,15 @@
 
                 if(scrollTop === 0) { 
                     this.distance = touch.clientY - this.touchStart
-                    if(this.distance > 0) {
+                    if(this.distance > 80) {
                         e.preventDefault()
-                        if(this.distance < 80) {
+                        if(this.distance < 160) {
                             pullRefresh.style.overflow = 'inherit'
                             pullRefresh.style.transform = 
                             `translate3D(0px, ${this.distance}px, 0px)`
                             refreshMsg.style.height = `${this.distance}px`
                             refreshMsg.style.lineHeight = `${this.distance}px`
-                            if(this.distance > 40) {
+                            if(this.distance >= 120) {
                                 this.msg = '释放刷新ヽ(￣▽￣)و'
                                 this.flag = true
                             } else {
@@ -163,14 +163,24 @@
                 if(document.body.scrollTop > 0) {
                     return
                 }
-                if(this.distance === 0 ) {
+                if(this.distance <= 80 ) {
                     return 
                 }
                 if(this.loading) {
-                    e.preventDefault()
+                   e.preventDefault()
                    return
                 }
-                if(this.flag && this.distance > 0) {
+                if( this.distance > 80 && this.distance < 120) {
+                     console.log('this.distance: ', this.distance )
+                     pullRefresh.scrollTop = 0
+                    pullRefresh.style.overflow = 'auto'
+                    pullRefresh.style.transform = 'translate3D(0px, 0px, 0px)'
+                     refreshMsg.style.height = `50px`
+                    refreshMsg.style.lineHeight = `50px`
+                    return
+                    
+                }
+                if(this.flag && this.distance > 120) {
                     pullRefresh.style.transform = 'translate3D(0px, 50px, 0px)'
                     refreshMsg.style.height = `50px`
                     refreshMsg.style.lineHeight = `50px`
@@ -185,9 +195,7 @@
                         })
                     return
                 }
-                this.flag = false
-                pullRefresh.style.overflow = 'auto'
-                pullRefresh.style.transform = 'translate3D(0px, 0px, 0px)'
+
             }
         }
 
