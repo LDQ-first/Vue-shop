@@ -367,24 +367,28 @@
             this.signupModalFlag = false
           },
           enterCart() {
-            if(!this.isLogin) {
-              this.mdShow = true
-            }
-            else {
-              this.$router.push({
-                path: "/cart"
-              })
-            }
+             setTimeout(() => {
+              if(!this.isLogin) {
+                this.mdShow = true
+              }
+              else {
+                this.$router.push({
+                  path: "/cart"
+                })
+              }
+             }, 50)
           },
           enterOrder() {
-             if(!this.isLogin) {
-              this.mdShow = true
-            }
-            else {
-              this.$router.push({
-                path: "/orderList"
-              })
-            }
+            setTimeout(() => {
+              if(!this.isLogin) {
+                this.mdShow = true
+              }
+              else {
+                this.$router.push({
+                  path: "/orderList"
+                })
+              }
+            }, 50 )
           },
           showSignupModal() {
             this.getCaptcha()
