@@ -12,7 +12,7 @@
                     </path>
                 </svg>
                 </span>
-                努力加载中─=≡Σ(((つ•̀ω•́)つ
+                {{LoadingTip}}
             </div>
             <div v-else class="hidenArea">
                 <span class="svg-wrapper">
@@ -27,19 +27,18 @@
                 </span>
                 {{msg}}
             </div>
-            <slot name="list"></slot>
         </div>
+         <slot name="list"></slot>
     </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .vue-pull-refresh {
-        height: 100%;
         overflow-y: auto;
         transition: .33s; 
         -webkit-overflow-scrolling: touch; /* ios5+ */
         .vue-pull-refresh-msg {
-            margin-top: -50px;
+            margin-top: -52px;
             height: 50px;
             text-align: center;
             line-height: 50px;   
@@ -47,7 +46,11 @@
             .hidenArea {
                  color: #918AE1;
                  font-weight: bold;
-                 font-size: 1.2em;  
+                 font-size: 1.2em; 
+                 width: 90vw;
+                 margin: 0 auto;
+                 overflow: hidden;
+                 white-space: nowrap; 
                  .svg-wrapper {
                      background: #FFF;
                      border-radius: 50%;
@@ -88,7 +91,36 @@
             next: {
                 type: Function,
                 required: true
+            },
+            language: {
+                type: String,
+                required: false
+            },
+            pullTip: {
+                type: String,
+                required: false
+            },
+            releaseTip: {
+                type: String,
+                required: false
+            },
+            loadingTip: {
+                type: String,
+                required: false
+            },
+            pullDistance: {
+                type: Number,
+                required: false
+            },
+            releaseDistance: {
+                type: Number,
+                required: false
+            },
+            maxDistance: {
+                type: Number,
+                required: false
             }
+
         },
         data() {
             return {
@@ -96,10 +128,22 @@
                 flag: false,
                 loading: false,
                 touchStart: 0,
-                distance: 0
+                distance: 0,
+                PullTip: '下拉刷新 (。＾▽＾)',
+                ReleaseTip: '释放刷新 ヽ(￣▽￣)و',
+                LoadingTip: '努力加载中 ─=≡Σ(((つ•̀ω•́)つ',
+                EPullTip: 'Pull To Refresh (。＾▽＾)',
+                EReleaseTip: 'Release To Refresh ヽ(￣▽￣)و',
+                ELoadingTip: 'Loading  ─=≡Σ(((つ•̀ω•́)つ',
+                PullDistance: 60,
+                ReleaseDistance: 120,
+                MaxDistance: 160
             }
         },
-        mounted() {
+        created () {
+            this.setParam() 
+        },
+        mounted () {
             const pullRefresh = this.$refs.pullRefresh,
                   refreshMsg = this.$refs.refreshMsg
             pullRefresh.addEventListener('touchstart', (e) => {
@@ -115,6 +159,23 @@
             })
         },
         methods: {
+            setParam () {
+                if (this.language && this.language.toLowerCase() === 'english' ){
+                    this.PullTip = this.EPullTip
+                    this.ReleaseTip = this.EReleaseTip
+                    this.LoadingTip = this.ELoadingTip
+                } 
+                if (this.pullTip || this.releaseTip || this.loadingTip) {
+                    this.PullTip = this.pullTip || this.PullTip
+                    this.ReleaseTip = this.releaseTip || this.ReleaseTip
+                    this.LoadingTip = this.loadingTip || this.LoadingTip
+                }
+                if ( this.pullDistance || this.releaseDistance || this.maxDistance) {
+                    this.PullDistance = this.pullDistance || this.PullDistance
+                    this.ReleaseDistance = this.releaseDistance || this.ReleaseDistance
+                    this.MaxDistance = this.maxDistance || this.MaxDistance
+                }
+            },
             start(e) {
                 if(document.body.scrollTop > 0) {
                     return
@@ -131,7 +192,6 @@
                     return
                 }
                 if(!this.touchStart) {
-                    e.preventDefault()
                     return
                 }
 
@@ -141,25 +201,28 @@
 
                 if(scrollTop === 0) { 
                     this.distance = touch.clientY - this.touchStart
-                    if(this.distance > 80) {
-                        e.preventDefault()
-                        if(this.distance < 160) {
+                    if(this.distance > 0) {
+                       e.preventDefault()
+                    }
+                    if(this.distance > this.PullDistance) {
+                        if(this.distance < this.MaxDistance) {
                             pullRefresh.style.overflow = 'inherit'
                             pullRefresh.style.transform = 
                             `translate3D(0px, ${this.distance}px, 0px)`
                             refreshMsg.style.height = `${this.distance}px`
                             refreshMsg.style.lineHeight = `${this.distance}px`
-                            if(this.distance >= 120) {
-                                this.msg = '释放刷新ヽ(￣▽￣)و'
+                            if(this.distance >= this.ReleaseDistance) {
+                                this.msg = this.ReleaseTip
                                 this.flag = true
                             } else {
-                                this.msg = '下拉刷新(。＾▽＾)'
+                                this.msg = this.PullTip
                             }
                         }
                     }
                 }
             },
             end(e, pullRefresh, refreshMsg) {
+                 
                 if(document.body.scrollTop > 0) {
                     return
                 }

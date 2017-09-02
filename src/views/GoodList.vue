@@ -1,5 +1,6 @@
 <template>
-    <div>
+    <pull-refresh :next="pullRefresh" loadingTip="Try To Loading  ─=≡Σ(((つ•̀ω•́)つ">
+    <div slot="list">
       <div class="page-container">
         <nav-header/>
         <bread>
@@ -29,8 +30,8 @@
 
               <!-- search result accessories list -->
               <div class="accessory-list-wrap">
-                <pull-refresh :next="pullRefresh">
-                <div slot="list" class="accessory-list col-4">
+                
+                <div  class="accessory-list col-4">
                   <ul>
                     <li v-for="(item, index) in goodsList" key="index">
                       <ripple speed="1" children="two">  
@@ -50,7 +51,7 @@
                     </li>
                   </ul>
                 </div>
-                </pull-refresh>
+                
                 <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="30" class="load-more">
                     <img src="../assets/loading-spinning-bubbles.svg" alt="" v-show="loading">
                   </div>
@@ -89,6 +90,7 @@
       </div>
       <nav-footer class="noPadding"/>
     </div>
+    </pull-refresh>
 </template>
 
 <style lang="scss">
@@ -117,7 +119,7 @@
     import echarts from 'echarts/lib/echarts'
     import macarons from 'echarts/theme/macarons'
 
-    const pullRefresh = resolve => require(['@/components/pullRefreshs'], resolve)
+  /*  const pullRefresh = resolve => require(['@/components/pullRefreshs'], resolve)*/
 
     export default{
         data(){
@@ -161,7 +163,7 @@
             NavFooter,
             Bread,
             Modal,
-            pullRefresh,
+           /* pullRefresh,*/
             Ripple
         },
         mounted: function () {

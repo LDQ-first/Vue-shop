@@ -16,6 +16,8 @@ Vue.use(infiniteScroll)
 
 Vue.filter("currency",currency)
 
+import VuePullToRefresh from 'vue-pull-to-refresh'
+Vue.use(VuePullToRefresh)
 
 /* eslint-disable no-new */
 new Vue({
