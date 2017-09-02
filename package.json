@@ -27,7 +27,7 @@
     "captcha": "cnpm install --save svg-captcha",
     "echarts": "cnpm install echarts --save",
     "dll": "webpack --config ./build/webpack.dll.config.js --progress",
-    "p": "cnpm install -S vue-pull-to-refresh"
+    "p": "cnpm install -S vue-pull-to-refresh" 
   },
   "dependencies": {
     "axios": "^0.16.2",
