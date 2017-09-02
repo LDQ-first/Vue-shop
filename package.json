@@ -11,7 +11,6 @@
     "axios": "cnpm install --save axios",
     "bgit": "npm run build && git add . && git commit -m 'modify' && git push origin master",
     "git": "git add . && git commit -m 'modify' && git push origin master",
-    "bgitp": "npm run bgit && npm run pm2deploy",
     "lazy": "cnpm install --save vue-lazyload",
     "express": "cnpm install -g express-generator",
     "ejs": "cnpm install --save ejs",
