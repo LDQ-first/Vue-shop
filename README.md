@@ -9,6 +9,7 @@
 
 > 部署在阿里云  
 > 采用Nginx进行代理转发
+> PM2做守护进程
 
 
 ## 注意存在的问题
@@ -31,7 +32,8 @@
 * **Webpack**: [ 模块化处理，编译打包 ]
 * **Express**: [ 服务器 ]
 * **Mongoose**: [ 连接MongoDB数据库 ]
-* **Nginx**：[ 代理转发，gzip压缩等 ]
+* **Nginx*: [ 代理转发，gzip压缩等 ]
+* **PM2**: [ 做守护进程 ]
 * **Axios**: [ 基于Promise处理HTTP请求 ]
 * **SASS**(**SCSS**): [ css预处理器 ]
 * **Flex**: [ 弹性布局 ]
