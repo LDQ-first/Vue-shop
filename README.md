@@ -12,13 +12,17 @@
 > PM2做守护进程
 
 
-## 注意存在的问题
+
+<p style="font-size: 20px; font-weight: bold;">
+## <h2 style="color: red; ">注意存在的问题</h2>
 
 > 由于域名没有备案，所以用ip访问，防止被阿里云封   
 > 由于没有使用Https[国内的免费证书都要备案域名]  
 > Chrome，Firefox等遇到 &lt;input type="password"&gt; 会报不安全  
+> 并非代码本身有问题  
 
-
+</p>
+  
 
 
 ## 技术栈
