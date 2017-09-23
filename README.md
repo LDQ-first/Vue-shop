@@ -9,12 +9,12 @@
 
 > 部署在阿里云  
 > 采用Nginx进行代理转发
-> PM2做守护进程    
+> PM2做守护进程
 
-   
 
- 
-<font style="font-size: 26px; color: red;">注意存在的问题</font>
+
+![注意](https://ldq-first.github.io/Vue-shop/static/font/注意.svg)
+<h2 style="font-size: 26px; color: red;">注意存在的问题</h2>
 <p style="font-size: 24px; line-height: 1.5; font-weight: bold;"> 
     由于域名没有备案，所以用ip访问，防止被阿里云封<br>
     由于没有使用Https[国内的免费证书都要备案域名]<br>  
