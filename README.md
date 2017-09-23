@@ -13,13 +13,13 @@
 
 
 
-<p style="font-size: 24px; font-weight: bold;">  
-    <h2 style="font-size: 26px; color: red;">注意存在的问题</h2>
-
-    由于域名没有备案，所以用ip访问，防止被阿里云封   
-    由于没有使用Https[国内的免费证书都要备案域名]  
-    Chrome，Firefox等遇到 &lt;input type="password"&gt; 会报不安全  
-    并非代码本身有问题  
+ 
+<h2 style="font-size: 26px; color: red;">注意存在的问题</h2>
+<p style="font-size: 24px; line-height: 1.5; font-weight: bold;"> 
+    由于域名没有备案，所以用ip访问，防止被阿里云封<br>
+    由于没有使用Https[国内的免费证书都要备案域名]<br>  
+    Chrome，Firefox等遇到 &lt;input type="password"&gt; 会报不安全<br>  
+    并非代码本身有问题<br>  
 </p>
   
 
