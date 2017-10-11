@@ -2,6 +2,7 @@ const digitsRE = /(\d{3})(?=\d)/g
 
 export const currency = (value, currency, decimals) => {
      value = parseFloat(value)
+     //isFinite 判断是否可用做数字
     if (!isFinite(value) || (!value && value !== 0)) return ''
     currency = currency != null ? currency : '$'
     decimals = decimals != null ? decimals : 2

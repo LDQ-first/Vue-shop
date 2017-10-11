@@ -13,7 +13,7 @@
 
 
 
-![注意](https://ldq-first.github.io/Vue-shop/static/font/注意.svg)
+![注意](http://ldqblog.me/Vue-shop/static/font/注意.svg)
 
 
 <h2 style="font-size: 26px; color: red;">注意存在的问题</h2>
